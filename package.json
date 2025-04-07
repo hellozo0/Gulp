@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "pinia": "^3.0.1",
-    "react-router-dom": "^7.4.1"
-  }
-}
