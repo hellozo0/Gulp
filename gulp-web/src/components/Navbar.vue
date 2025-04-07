@@ -1,0 +1,120 @@
+<template>
+  <div class="navbar">
+    <div class="inner">
+      <!-- 로고 -->
+      <img
+        src="../assets/images/logo_header.png"
+        class="logo-header"
+        alt="꿀깍"
+      />
+
+      <!-- 메뉴 -->
+      <div class="menu">
+        <RouterLink to="/" :class="linkClass('/')">소비 통계</RouterLink>
+        <RouterLink to="/history" :class="linkClass('/history')"
+          >전체 내역</RouterLink
+        >
+        <RouterLink to="/loan" :class="linkClass('/loan')">대출현황</RouterLink>
+      </div>
+
+      <!-- 버튼 영역 -->
+      <div class="action">
+        <button class="join-btn">지금 멤버십 가입</button>
+        <RouterLink to="/login" class="start-btn">시작하기</RouterLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+const linkClass = (path) => {
+  const isActive = route.path === path;
+  return isActive ? 'nav-link active' : 'nav-link';
+};
+</script>
+
+<style scoped>
+.navbar {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid #ddd;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1200px;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 32px;
+}
+
+.menu {
+  display: flex;
+  gap: 32px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.nav-link {
+  color: black;
+  text-decoration: none;
+  padding-bottom: 3px;
+  position: relative;
+}
+
+.nav-link.active {
+  color: #f9dc14;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -33px; /* 절대 위치 */
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #f9dc14;
+}
+
+.action {
+  display: flex;
+  gap: 12px;
+}
+
+.join-btn {
+  padding: 12px 24px;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 9999px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.start-btn {
+  padding: 12px 24px;
+  min-width: max-content;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
