@@ -55,11 +55,13 @@ const netIncome = computed(() => totalIncome.value - totalExpense.value);
 <style scoped>
 h3 {
   font-weight: bold;
+  margin: 1rem;
 }
 p {
   font-size: 1.35rem;
   text-align: right;
   font-weight: bold;
+  margin: 1rem;
 }
 .between {
   display: flex;
