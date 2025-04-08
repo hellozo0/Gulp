@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center; /* 내부를 가운데로 */
   align-items: center;
-  width: 100vw; /*뷰포트 전체 너비*/
+  width: 100%;
   height: 80px;
   margin: 0;
   box-sizing: border-box;
