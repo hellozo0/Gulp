@@ -1,28 +1,6 @@
 <template>
   <footer class="footer">
     <div class="footer-inner">
-      <!-- 뉴스레터 -->
-      <!-- <section class="newsletter">
-        <div class="left">
-          <p class="heading">꿀깍의 앞으로의 행보가 궁금하다면?</p>
-        </div>
-        <div class="right">
-          <div class="input-group">
-            <input
-              type="text"
-              placeholder="Your email address"
-              class="email-custom"
-            />
-            <button class="subscribe-btn">뉴스 레터 구독</button>
-          </div>
-          <label class="checkbox">
-            <img src="@/assets/images/check_ic.png" alt="check" />
-            <span class="consent-text"
-              >개인정보 수집 및 이용과 광고성 정보 수신 동의</span
-            >
-          </label>
-        </div>
-      </section> -->
       <section class="newsletter">
         <p class="heading">꿀깍의 앞으로의 행보가 궁금하다면?</p>
         <div class="input-wrap">
@@ -42,8 +20,6 @@
           </label>
         </div>
       </section>
-
-      <!-- 3열 정보 섹션 -->
       <section class="info-grid">
         <div>
           <h3>Notice</h3>
@@ -65,8 +41,6 @@
           </p>
         </div>
       </section>
-
-      <!-- 하단 바 -->
       <section class="bottom-bar">
         <div class="rules">
           <div class="links">
@@ -91,7 +65,6 @@
 <style scoped>
 .footer {
   background-color: #f8f8f8;
-  /* padding: 60px 0 40px 0; */
   padding: 130px 40px;
   width: 100vw;
   font-family: 'Inter', sans-serif;
@@ -107,12 +80,6 @@
   box-sizing: border-box;
 }
 
-/* .newsletter {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 40px;
-} */
 .newsletter {
   display: flex;
   justify-content: space-between;
@@ -125,13 +92,6 @@
   font-size: 30px;
   font-weight: bold;
 }
-
-/* .input-group {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  width: 100%;
-} */
 
 .input-wrap {
   display: flex;
@@ -158,7 +118,6 @@
   font-size: 14px;
   flex: 1;
   outline: none;
-  /* min-width: 0; */
 }
 
 .subscribe-btn {
@@ -199,7 +158,6 @@
 }
 
 .bottom-bar {
-  /* border-top: 1px solid #ddd; */
   padding-top: 30px;
   font-size: 14px;
   color: #777;
