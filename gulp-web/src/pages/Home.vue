@@ -1,24 +1,34 @@
 <template>
+  <br />
   <div class="container-fluid">
+    <!-- 월 선택 -->
+    <div class="month-selector">
+      <select v-model="selectedMonth" id="month">
+        <option v-for="month in availableMonths" :key="month" :value="month">
+          {{ month }}
+        </option>
+      </select>
+    </div>
+
     <div class="flexbox-container">
       <!-- 지출별 -->
       <div class="bySpending">
-        <BySpending />
+        <BySpending :selectedMonth="selectedMonth" />
       </div>
       <div class="right-column">
         <!-- 순이익 -->
         <div class="netProfit">
-          <NetProfit />
+          <NetProfit :selectedMonth="selectedMonth" />
         </div>
         <!-- 최신순 -->
         <div class="sortByLatest">
-          <SortByLatest />
+          <SortByLatest :selectedMonth="selectedMonth" />
         </div>
       </div>
     </div>
     <!-- 감정별 -->
     <div class="byEmotion">
-      <ByEmotion />
+      <ByEmotion :selectedMonth="selectedMonth" />
     </div>
   </div>
 </template>
@@ -28,12 +38,39 @@ import SortByLatest from '@/components/SortByLatest.vue';
 import ByEmotion from '@/components/ByEmotion.vue';
 import NetProfit from '@/components/NetProfit.vue';
 import BySpending from '@/components/BySpending.vue';
+import axios from 'axios';
 
 export default {
   name: 'Home',
   components: { SortByLatest, ByEmotion, NetProfit, BySpending },
+  data() {
+    return {
+      budgetData: [],
+      availableMonths: [],
+      selectedMonth: '',
+    };
+  },
+  async mounted() {
+    const res = await axios.get('http://localhost:3000/budget');
+    this.budgetData = res.data;
+    const months = [...new Set(res.data.map((item) => item.date.slice(0, 7)))];
+    this.availableMonths = months.sort((a, b) => new Date(b) - new Date(a));
+    this.selectedMonth = this.availableMonths[0];
+  },
 };
 </script>
+
+<style scoped>
+.month-selector {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+select {
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+</style>
+
 <style scoped>
 * {
   font-family: sans-serif;
