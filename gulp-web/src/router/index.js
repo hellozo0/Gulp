@@ -5,6 +5,7 @@ import Loan from '@/pages/Loan.vue';
 import Login from '@/pages/Login.vue';
 import SignUp from '@/pages/SignUp.vue';
 import MyPage from '../pages/MyPage.vue';
+import MyPageEdit from '@/pages/MyPageEdit.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,11 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPage,
+    },
+    {
+      path: '/mypage/edit/:id',
+      name: 'mypageEdit',
+      component: MyPageEdit,
     },
   ],
 });
