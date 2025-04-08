@@ -34,10 +34,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user.js';
 
 const id = ref('');
 const password = ref('');
 const router = useRouter();
+const userStore = useUserStore();
 
 const login = async () => {
   if (!id.value || !password.value) {
@@ -51,7 +53,11 @@ const login = async () => {
 
   if (data.length > 0) {
     // 로그인 성공
-    localStorage.setItem('userId', data[0].userId);
+    const user = data[0];
+    user.nickname = user.nickName;
+    localStorage.setItem('user', JSON.stringify(user));
+    userStore.login(user);
+
     router.push('/'); // 홈으로 이동
   } else {
     alert('아이디 또는 비밀번호가 틀렸습니다.');
