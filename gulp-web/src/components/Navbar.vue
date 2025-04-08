@@ -16,7 +16,21 @@
       <!-- 버튼 영역 -->
       <div class="action">
         <button class="join-btn">지금 멤버십 가입</button>
-        <RouterLink to="/login" class="start-btn">시작하기</RouterLink>
+
+        <!-- 로그인 안 된 상태 -->
+        <RouterLink v-if="!isLoggedIn" to="/login" class="start-btn"
+          >시작하기</RouterLink
+        >
+
+        <!-- 로그인 된 상태 -->
+        <RouterLink v-else :to="`/mypage/${userId}`" class="user-login">
+          <img
+            src="../assets/images/mypage_icon.png"
+            class="logo"
+            alt="마이페이지"
+          />
+          <p>{{ nickname }}님</p>
+        </RouterLink>
       </div>
     </div>
   </div>
@@ -24,11 +38,20 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user.js';
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+
 const route = useRoute();
+const userStore = useUserStore();
+const { isLoggedIn, nickname, userId } = storeToRefs(userStore);
+
+onMounted(() => {
+  userStore.loadUser(); // 새로고침해도 상태 유지
+});
 
 const linkClass = (path) => {
-  const isActive = route.path === path;
-  return isActive ? 'nav-link active' : 'nav-link';
+  return route.path === path ? 'nav-link active' : 'nav-link';
 };
 </script>
 
@@ -118,5 +141,25 @@ const linkClass = (path) => {
   font-size: 15px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.user-login {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 아이콘과 텍스트 간격 */
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.user-login:hover {
+  color: #f9dc14; /* 호버 시 색상 강조 */
+}
+
+.user-login p {
+  margin: 0;
+  padding: 0;
+  line-height: 1; /* 필요 시 조정 */
 }
 </style>
