@@ -70,6 +70,7 @@
   font-family: 'Inter', sans-serif;
   color: #333;
   border-top: 1px #ddd;
+  margin-top: 20rem;
   overflow-x: hidden;
 }
 

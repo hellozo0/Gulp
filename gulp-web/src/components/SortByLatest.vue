@@ -59,6 +59,7 @@ a:hover {
 }
 h3 {
   font-weight: bold;
+  margin: 1rem;
 }
 p {
   font-size: 1.2rem;
