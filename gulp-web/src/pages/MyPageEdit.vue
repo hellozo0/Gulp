@@ -32,11 +32,13 @@
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user.js';
 import { ref, onMounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
 const userId = route.params.id;
+const userStore = useUserStore();
 
 const user = ref({
   id: '',
@@ -45,6 +47,19 @@ const user = ref({
   nickName: '',
 });
 
+const saveNickname = () => {
+  userStore.nickname = user.value.nickName; // Pinia 상태 업데이트
+  localStorage.setItem(
+    'user',
+    JSON.stringify({
+      id: userStore.id,
+      userId: userStore.userId,
+      nickname: userStore.nickname, // nickname을 Pinia 상태에서 가져옴
+      email: userStore.email,
+    })
+  ); // localStorage에 업데이트된 값 저장
+  router.push('/mypage/' + userStore.userId); // 마이페이지로 돌아가기
+};
 onMounted(async () => {
   const res = await fetch(`http://localhost:3000/users?userId=${userId}`);
   const data = await res.json();
@@ -61,12 +76,13 @@ const updateUser = async () => {
     }),
   });
   if (res.ok) {
-    router.push('/mypage');
+    // router.push('/mypage');
+    saveNickname();
   }
 };
 
 const goBack = () => {
-  router.push('/mypage');
+  router.push('/mypage/' + userId);
 };
 </script>
 

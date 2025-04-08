@@ -10,6 +10,10 @@
         <router-link :to="`/mypage/edit/${user.userId}`"
           ><button class="edit-btn">프로필 수정하기</button></router-link
         >
+        <br />
+        <router-link :to="`/landing`" @click="logout" class="logout-btn"
+          >로그아웃 하기</router-link
+        >
       </div>
     </div>
   </div>
@@ -17,18 +21,28 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user.js';
 import MyPageEdit from '@/pages/MyPageEdit.vue';
 import { ref, onMounted } from 'vue';
 
-const route = useRoute();
+const router = useRoute();
 const user = ref({});
+const userStore = useUserStore();
 
 // 일단 users1로 고정해서 조회
 onMounted(async () => {
-  const res = await fetch('http://localhost:3000/users?userId=1');
+  const id = router.params.id; // ✅ URL에서 받은 id
+  const res = await fetch(`http://localhost:3000/users?userId=${id}`);
   const data = await res.json();
   user.value = data[0];
 });
+
+const logout = () => {
+  userStore.logout(); // Pinia 상태 초기화
+  localStorage.clear();
+  router.push('/landing'); // 랜딩 페이지로 리다이렉트
+  window.location.reload();
+};
 </script>
 
 <style scoped>
@@ -71,5 +85,16 @@ onMounted(async () => {
 
 .edit-btn:hover {
   background-color: #fcd400;
+}
+
+.logout-btn {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #707070;
+}
+
+.logout-btn:hover {
+  color: #fae55f;
 }
 </style>
