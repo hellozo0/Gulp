@@ -40,6 +40,10 @@ const password = ref('');
 const router = useRouter();
 
 const login = async () => {
+  if (!id.value || !password.value) {
+    alert('아이디와 비밀번호를 입력하세요.');
+    return;
+  }
   const res = await fetch(
     `http://localhost:3000/users?id=${id.value}&password=${password.value}`
   );
