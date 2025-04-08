@@ -47,6 +47,19 @@ const user = ref({
   nickname: '',
 });
 
+const saveNickname = () => {
+  userStore.nickname = user.value.nickName; // Pinia 상태 업데이트
+  localStorage.setItem(
+    'user',
+    JSON.stringify({
+      id: userStore.id,
+      userId: userStore.userId,
+      nickname: userStore.nickname, // nickname을 Pinia 상태에서 가져옴
+      email: userStore.email,
+    })
+  ); // localStorage에 업데이트된 값 저장
+  router.push('/mypage/' + userStore.userId); // 마이페이지로 돌아가기
+};
 onMounted(async () => {
   const id = route.params.id; // URL에서 userId를 받아옵니다.
   const res = await fetch(`http://localhost:3000/users?id=${id}`);
