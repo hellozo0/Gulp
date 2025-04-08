@@ -1,34 +1,37 @@
 <template>
   <div class="container-fluid">
     <div class="flexbox-container">
-      <div class="bySpending"><h4>지출 상위 4개 항목</h4></div>
+      <!-- 지출별 -->
+      <div class="bySpending">
+        <BySpending />
+      </div>
       <div class="right-column">
+        <!-- 순이익 -->
         <div class="netProfit">
-          <h4>이번달은 얼마 남았을까요</h4>
-          <br />
-          <div class="d-flex justify-content-between">
-            <p>수입</p>
-            <p>원</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p>소비</p>
-            <p>원</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p>순이익</p>
-            <p>원</p>
-          </div>
+          <NetProfit />
         </div>
-        <div class="sortByLatest"><h4>4월 내역 최신순 조회</h4></div>
+        <!-- 최신순 -->
+        <div class="sortByLatest">
+          <SortByLatest />
+        </div>
       </div>
     </div>
-    <div class="byEmotion">byEmotion</div>
+    <!-- 감정별 -->
+    <div class="byEmotion">
+      <ByEmotion />
+    </div>
   </div>
 </template>
 
 <script>
+import SortByLatest from '@/components/SortByLatest.vue';
+import ByEmotion from '@/components/ByEmotion.vue';
+import NetProfit from '@/components/NetProfit.vue';
+import BySpending from '@/components/BySpending.vue';
+
 export default {
   name: 'Home',
+  components: { SortByLatest, ByEmotion, NetProfit, BySpending },
 };
 </script>
 <style scoped>
@@ -58,6 +61,7 @@ export default {
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   flex: 1;
+  padding: 1rem;
   min-width: 200px;
 }
 
@@ -65,7 +69,7 @@ export default {
 .right-column {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   flex: 1;
 }
 
@@ -73,6 +77,8 @@ export default {
   background-color: #fff;
   /* padding: 2rem; */
   width: 100%;
+  padding: 1.5rem;
+
   height: 300px;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
@@ -80,8 +86,10 @@ export default {
 /* 박스 스타일 공통 */
 .netProfit,
 .sortByLatest {
-  background-color: #f9dc14;
-  opacity: 60%;
+  background-color: #fae55f;
+  /* opacity: 60%; */
+  padding: 1.5rem;
+
   /* padding: 12rem 8rem; */
   min-height: 200px;
   border-radius: 2rem;
