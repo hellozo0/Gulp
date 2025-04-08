@@ -44,7 +44,7 @@ const router = createRouter({
       component: SignUp,
     },
     {
-      path: '/mypage',
+      path: '/mypage/:id',
       name: 'mypage',
       component: MyPage,
     },
