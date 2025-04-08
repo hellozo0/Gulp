@@ -2,11 +2,7 @@
   <div class="navbar">
     <div class="inner">
       <!-- 로고 -->
-      <img
-        src="../assets/images/logo_header.png"
-        class="logo-header"
-        alt="꿀깍"
-      />
+      <img src="../assets/images/logo_header.png" class="logo" alt="꿀깍" />
 
       <!-- 메뉴 -->
       <div class="menu">
@@ -38,6 +34,12 @@ const linkClass = (path) => {
 
 <style scoped>
 .navbar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1000;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -46,21 +48,21 @@ const linkClass = (path) => {
 
 .inner {
   width: 100%;
-  max-width: 1200px;
-  padding: 14px 24px;
+  max-width: 1800px;
+  padding: 14px 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* 자식들 사이에 자동으로 공간이 분배되기 때문에, gap이 무시된다. */
   align-items: center;
   box-sizing: border-box;
 }
 
 .logo {
-  height: 32px;
+  margin-left: 12px;
 }
 
 .menu {
   display: flex;
-  gap: 32px;
+  gap: 90px;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -82,7 +84,7 @@ const linkClass = (path) => {
 .nav-link.active::after {
   content: '';
   position: absolute;
-  bottom: -33px; /* 절대 위치 */
+  bottom: -37px;
   left: 0;
   width: 100%;
   height: 3px;
