@@ -47,18 +47,28 @@ const user = ref({
   nickname: '',
 });
 
+onMounted(async () => {
+  const id = route.params.id; // URL에서 userId를 받아옵니다.
+  const res = await fetch(`http://localhost:3000/users?id=${id}`);
+  const data = await res.json();
+  if (data.length > 0) {
+    user.value = data[0]; // 받은 데이터로 user 정보를 업데이트
+  }
+});
+
 const saveNickname = () => {
-  userStore.nickname = user.value.nickName; // Pinia 상태 업데이트
+  // Pinia 상태와 localStorage 업데이트
+  userStore.nickname = user.value.nickname;
   localStorage.setItem(
     'user',
     JSON.stringify({
       id: userStore.id,
-      userId: userStore.userId,
-      nickname: userStore.nickname, // nickname을 Pinia 상태에서 가져옴
+      name: userStore.name,
+      nickname: userStore.nickname,
       email: userStore.email,
     })
-  ); // localStorage에 업데이트된 값 저장
-  router.push('/mypage/' + userStore.userId); // 마이페이지로 돌아가기
+  );
+  router.push('/mypage/' + userStore.id); // 마이페이지로 이동
 };
 onMounted(async () => {
   const id = route.params.id; // URL에서 userId를 받아옵니다.
