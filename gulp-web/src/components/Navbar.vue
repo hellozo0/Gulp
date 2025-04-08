@@ -49,7 +49,7 @@ const linkClass = (path) => {
 .inner {
   width: 100%;
   max-width: 1800px;
-  padding: 14px 40px;
+  padding: 2px 40px;
   display: flex;
   justify-content: space-between; /* 자식들 사이에 자동으로 공간이 분배되기 때문에, gap이 무시된다. */
   align-items: center;
@@ -84,7 +84,7 @@ const linkClass = (path) => {
 .nav-link.active::after {
   content: '';
   position: absolute;
-  bottom: -37px;
+  bottom: -25px;
   left: 0;
   width: 100%;
   height: 3px;
@@ -115,7 +115,7 @@ const linkClass = (path) => {
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   text-decoration: none;
   cursor: pointer;
 }
