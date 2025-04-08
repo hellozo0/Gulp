@@ -4,10 +4,10 @@
       <img src="@/assets/images/mypage_default_img.jpg" alt="캐릭터" />
       <div class="content">
         <h2>
-          <span class="nickname">{{ user.nickName }}</span
+          <span class="nickname">{{ user.nickname }}</span
           >님 반가워요!
         </h2>
-        <router-link :to="`/mypage/edit/${user.userId}`"
+        <router-link :to="`/mypage/edit/${user.id}`"
           ><button class="edit-btn">프로필 수정하기</button></router-link
         >
         <br />
@@ -20,19 +20,21 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
 import MyPageEdit from '@/pages/MyPageEdit.vue';
 import { ref, onMounted } from 'vue';
 
-const router = useRoute();
+const route = useRoute(); // 현재 경로 정보를 가져옵니다.
+const router = useRouter(); // 라우터를 통해 페이지 이동을 제어합니다.
 const user = ref({});
 const userStore = useUserStore();
 
 // 일단 users1로 고정해서 조회
+// 일단 users1로 고정해서 조회
 onMounted(async () => {
-  const id = router.params.id; // ✅ URL에서 받은 id
-  const res = await fetch(`http://localhost:3000/users?userId=${id}`);
+  const id = route.params.id; // ✅ URL에서 받은 id
+  const res = await fetch(`http://localhost:3000/users?id=${id}`);
   const data = await res.json();
   user.value = data[0];
 });
@@ -41,7 +43,7 @@ const logout = () => {
   userStore.logout(); // Pinia 상태 초기화
   localStorage.clear();
   router.push('/landing'); // 랜딩 페이지로 리다이렉트
-  window.location.reload();
+  // window.location.reload();
 };
 </script>
 

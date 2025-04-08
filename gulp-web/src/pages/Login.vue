@@ -3,7 +3,7 @@
     <img src="@/assets/images/logo_center.png" class="logo-center" alt="로고" />
 
     <div class="login-box">
-      <input v-model="id" placeholder="아이디" class="input" />
+      <input v-model="userId" placeholder="아이디" class="input" />
       <input
         v-model="password"
         type="password"
@@ -36,25 +36,25 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
 
-const id = ref('');
+const userId = ref('');
 const password = ref('');
 const router = useRouter();
 const userStore = useUserStore();
 
 const login = async () => {
-  if (!id.value || !password.value) {
+  if (!userId.value || !password.value) {
     alert('아이디와 비밀번호를 입력하세요.');
     return;
   }
   const res = await fetch(
-    `http://localhost:3000/users?id=${id.value}&password=${password.value}`
+    `http://localhost:3000/users?userId=${userId.value}&password=${password.value}`
   );
   const data = await res.json();
 
   if (data.length > 0) {
     // 로그인 성공
     const user = data[0];
-    user.nickname = user.nickName;
+    user.nickname = user.nickname;
     localStorage.setItem('user', JSON.stringify(user));
     userStore.login(user);
 
@@ -80,11 +80,6 @@ const login = async () => {
 .login-wrapper .logo-center {
   height: 200px;
   margin-bottom: 50px;
-}
-
-.logo {
-  width: 120px;
-  margin-bottom: 40px;
 }
 
 .login-box {

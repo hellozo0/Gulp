@@ -3,7 +3,7 @@
     <h2>마이페이지</h2>
     <form class="form-box" @submit.prevent="updateUser">
       <label>아이디</label>
-      <p class="data">{{ user.id }}</p>
+      <p class="data">{{ user.userId }}</p>
 
       <label>이메일</label>
       <input
@@ -17,7 +17,7 @@
 
       <label>닉네임</label>
       <input
-        v-model="user.nickName"
+        v-model="user.nickname"
         class="data edit-data"
         placeholder="닉네임을 입력하세요"
       />
@@ -35,54 +35,61 @@ import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
 import { ref, onMounted } from 'vue';
 
-const route = useRoute();
 const router = useRouter();
-const userId = route.params.id;
+const route = useRoute();
 const userStore = useUserStore();
 
+// 사용자 정보를 담을 객체
 const user = ref({
   id: '',
   email: '',
   name: '',
-  nickName: '',
+  nickname: '',
+});
+
+onMounted(async () => {
+  const id = route.params.id; // URL에서 userId를 받아옵니다.
+  const res = await fetch(`http://localhost:3000/users?id=${id}`);
+  const data = await res.json();
+  if (data.length > 0) {
+    user.value = data[0]; // 받은 데이터로 user 정보를 업데이트
+  }
 });
 
 const saveNickname = () => {
-  userStore.nickname = user.value.nickName; // Pinia 상태 업데이트
+  // Pinia 상태와 localStorage 업데이트
+  userStore.nickname = user.value.nickname;
   localStorage.setItem(
     'user',
     JSON.stringify({
       id: userStore.id,
-      userId: userStore.userId,
-      nickname: userStore.nickname, // nickname을 Pinia 상태에서 가져옴
+      name: userStore.name,
+      nickname: userStore.nickname,
       email: userStore.email,
     })
-  ); // localStorage에 업데이트된 값 저장
-  router.push('/mypage/' + userStore.userId); // 마이페이지로 돌아가기
+  );
+  router.push('/mypage/' + userStore.id); // 마이페이지로 이동
 };
-onMounted(async () => {
-  const res = await fetch(`http://localhost:3000/users?userId=${userId}`);
-  const data = await res.json();
-  user.value = data[0];
-});
 
 const updateUser = async () => {
+  // PATCH 요청으로 사용자 데이터 수정
   const res = await fetch(`http://localhost:3000/users/${user.value.id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email: user.value.email,
-      nickName: user.value.nickName,
+      nickname: user.value.nickname,
     }),
   });
   if (res.ok) {
-    // router.push('/mypage');
-    saveNickname();
+    saveNickname(); // 업데이트 성공 시 닉네임 저장
+  } else {
+    console.error('사용자 수정 실패');
   }
 };
 
 const goBack = () => {
-  router.push('/mypage/' + userId);
+  router.push('/mypage/' + user.value.id); // 수정 취소 시 마이페이지로 돌아가기
 };
 </script>
 

@@ -23,7 +23,7 @@
         >
 
         <!-- 로그인 된 상태 -->
-        <RouterLink v-else :to="`/mypage/${userId}`" class="user-login">
+        <RouterLink v-else :to="`/mypage/${id}`" class="user-login">
           <img
             src="../assets/images/mypage_icon.png"
             class="logo"
@@ -44,7 +44,7 @@ import { onMounted } from 'vue';
 
 const route = useRoute();
 const userStore = useUserStore();
-const { isLoggedIn, nickname, userId } = storeToRefs(userStore);
+const { isLoggedIn, nickname, id } = storeToRefs(userStore);
 
 onMounted(() => {
   userStore.loadUser(); // 새로고침해도 상태 유지

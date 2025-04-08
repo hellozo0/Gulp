@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
   state: () => ({
     isLoggedIn: false,
-    userId: null, // DB상의 PK
-    id: '', //user 로그인 id
+    id: '', // DB상의 PK
+    userId: null, //user 로그인 id
     nickname: '', // 닉네임
     email: '', // 이메일 등 추가 정보
   }),
