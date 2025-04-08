@@ -6,6 +6,7 @@ import Login from '@/pages/Login.vue';
 import SignUp from '@/pages/SignUp.vue';
 import MyPage from '../pages/MyPage.vue';
 import MyPageEdit from '@/pages/MyPageEdit.vue';
+import Landing from '@/pages/Landing.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/loan',
       name: 'loan',
       component: Loan,
+    },
+    {
+      path: '/landing',
+      name: 'lading',
+      component: Landing,
     },
     {
       path: '/login',
