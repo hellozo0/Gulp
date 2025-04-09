@@ -76,15 +76,15 @@
   "incomeCategory": [
     {
       "id": "1",
-      "name": "급여"
+      "name": "그외"
     },
     {
       "id": "2",
-      "name": "용돈"
+      "name": "급여"
     },
     {
       "id": "3",
-      "name": "그외"
+      "name": "용돈"
     }
   ],
   "expenseCategory": [
