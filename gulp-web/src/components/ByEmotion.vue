@@ -32,7 +32,7 @@ const categoryImages = {
   스트레스: 'stress.png',
   의무감: 'duty.png',
   후회: 'regret.png',
-  모름: 'question.png',
+  '모름(기타)': 'question.png',
 };
 
 // 이미지 경로 반환
