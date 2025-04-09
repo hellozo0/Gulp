@@ -1,5 +1,4 @@
 <template>
-  <br />
   <div class="container-fluid">
     <!-- 월 선택 -->
     <div class="month-selector">
