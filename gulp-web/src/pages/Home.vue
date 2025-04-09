@@ -62,11 +62,18 @@ export default {
 <style scoped>
 .month-selector {
   margin-bottom: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 select {
   padding: 0.5rem;
   margin-left: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  opacity: 90%;
+  /* background-color: #fae55f; */
+}
+select:hover {
+  background-color: #fae55f;
 }
 </style>
 
@@ -75,7 +82,7 @@ select {
   font-family: sans-serif;
 }
 .container-fluid {
-  width: 1000px;
+  width: 70%;
   max-width: none;
   min-height: 100vh;
   margin: 0 auto;
@@ -87,23 +94,29 @@ select {
   gap: 2rem;
   margin-bottom: 2rem;
   align-items: stretch;
+  flex-wrap: wrap;
 }
 
 /* 왼쪽 박스 */
 .bySpending {
   background-color: white;
   /* padding: 2rem; */
-  min-height: 420px;
+  min-height: 100px;
+  max-height: 100%;
+  max-width: 70%;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   flex: 1;
-  padding: 1rem;
+  padding: 3rem;
   min-width: 200px;
 }
 
 /* 오른쪽 컬럼 */
 .right-column {
   display: flex;
+  min-height: 100px;
+  max-height: 100%;
+  max-width: 70%;
   flex-direction: column;
   gap: 1.5rem;
   flex: 1;
@@ -114,7 +127,8 @@ select {
   /* padding: 2rem; */
   width: 100%;
   height: 10rem;
-  padding: 1.5rem;
+
+  padding: 3rem;
 
   height: 300px;
   border-radius: 2rem;
@@ -125,7 +139,7 @@ select {
 .sortByLatest {
   background-color: #fae55f;
   /* opacity: 60%; */
-  padding: 1.5rem;
+  padding: 3rem;
 
   /* padding: 12rem 8rem; */
   min-height: 200px;

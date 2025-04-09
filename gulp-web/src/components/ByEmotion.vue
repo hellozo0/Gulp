@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h3 v-if="topCategories.length">
+    <h2 v-if="topCategories.length">
       이번달은 {{ emotionTitle }} 소비가 많아요 !
-    </h3>
-    <h3 v-else>이번달은 등록된 감정 소비가 없어요</h3>
+    </h2>
+    <h2 v-else>이번달은 등록된 감정 소비가 없어요</h2>
     <div class="chart-section">
       <div class="chart-container">
         <canvas ref="doughnut"></canvas>
@@ -62,15 +62,17 @@ const renderChart = (labels, data) => {
           label: '감정',
           data,
           backgroundColor: [
-            '#ffd4d4',
-            '#face98',
-            '#98f0fa',
-            '#91ff9a',
-            '#fafa89',
-            '#636363',
+            '#F5EEDC',
+            '#FFB22C',
+            '#854836',
+            '#000000',
+            '#706D54',
+            '#C9B194',
           ],
-          borderColor: '#fffce6', // 원하는 테두리 색
-          borderWidth: 3, // 테두리 두께
+          // borderColor: '#fffce6', // 원하는 테두리 색
+          // borderWidth: 4, // 테두리 두께
+          circumference: 180, // 도넛 반 자르기
+          rotation: 270,
         },
       ],
     },
@@ -147,7 +149,7 @@ h3 {
 }
 
 .chart-container {
-  width: 450px;
+  width: 900px;
   position: relative;
 }
 
@@ -172,6 +174,11 @@ ul {
 li {
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
+}
+
+h2 {
+  font-weight: bold;
+  margin: 1rem;
 }
 
 .expense {
