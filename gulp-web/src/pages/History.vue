@@ -1,16 +1,5 @@
 <template>
   <div class="calendar-wrapper">
-    <!-- ✅ 오늘로 이동 버튼 (왼쪽 상단) -->
-    <div class="calendar-header">
-      <button
-        class="today-button"
-        @click="goToToday"
-        style="margin-left: 250px"
-      >
-        오늘로 이동
-      </button>
-    </div>
-
     <!-- 📅 달력 -->
     <v-calendar
       :key="calendarKey"
@@ -51,7 +40,14 @@
 
     <!-- ✅ 선택한 날짜 표시 -->
     <div v-if="selectedDate" class="selected-info">
-      ✅ 선택한 날짜: {{ selectedDate }}
+      <label style="cursor: pointer">
+        <input
+          type="checkbox"
+          v-model="isDateSelected"
+          @change="toggleSelectedDate"
+        />
+        <span style="margin-left: 8px">선택한 날짜: {{ selectedDate }}</span>
+      </label>
     </div>
   </div>
 
@@ -64,8 +60,17 @@
           전체
           <span class="arrow" :class="{ open: isOpen }">▼</span>
         </div>
+
         <button class="sort-toggle" @click="toggleSortOrder">
           {{ isAsc ? '↑ 오름차순' : '↓ 내림차순' }}
+        </button>
+
+        <!-- ✅ 초기화 버튼 추가 -->
+        <button class="reset-button" @click="resetFilters">초기화</button>
+
+        <button class="today-button" @click="goToToday">
+          오늘로 이동
+          <i class="fa-solid fa-rotate-left icon-rotate"></i>
         </button>
       </div>
       <!-- 말풍선 메뉴 -->
@@ -203,7 +208,7 @@ const selectedPeriod = ref('일별');
 const selectedCategory = ref('전체');
 const selectedEmotion = ref('전체');
 const selectedType = ref('모두');
-const isAsc = ref(true);
+const isAsc = ref(false);
 const toggleSortOrder = () => {
   isAsc.value = !isAsc.value;
 };
@@ -226,6 +231,22 @@ const categoryOrder = [
   '이체',
   '저축', // 지출
 ];
+const resetFilters = () => {
+  selectedPeriod.value = '일별';
+  selectedCategory.value = '전체';
+  selectedType.value = '모두';
+  selectedEmotion.value = '전체';
+  isAsc.value = false; // 기본 정렬 내림차순
+  selectedDate.value = '';
+  isDateSelected.value = true;
+};
+const isDateSelected = ref(true);
+
+const toggleSelectedDate = () => {
+  if (!isDateSelected.value) {
+    selectedDate.value = '';
+  }
+};
 onMounted(() => {
   budgetStore.fetchBudgetByDate(); // 데이터 로드
 });
@@ -273,14 +294,22 @@ const groupedBudgetByPeriod = computed(() => {
         filtered = filtered.filter((item) => item.type === 'expense');
       }
 
-      // 카테고리 정렬은 그대로 유지
       filtered = filtered.sort((a, b) => {
         return (
           categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category)
         );
       });
 
-      if (filtered.length > 0) acc[key] = filtered;
+      // ✅ 날짜 선택 시 해당 날짜만 남기기
+      if (selectedDate.value) {
+        const formattedKey = formatDate(key);
+        if (formattedKey === selectedDate.value && filtered.length > 0) {
+          acc[key] = filtered;
+        }
+      } else if (filtered.length > 0) {
+        acc[key] = filtered;
+      }
+
       return acc;
     }, {});
 
@@ -335,7 +364,12 @@ const onPageUpdate = (pages) => {
 
 // 📌 셀 클릭 시 선택 날짜 설정
 const onCellClick = (date) => {
-  selectedDate.value = formatDate(date);
+  const formatted = formatDate(date);
+  if (selectedDate.value === formatted) {
+    selectedDate.value = ''; // 다시 누르면 취소
+  } else {
+    selectedDate.value = formatted;
+  }
 };
 
 // 💰 예시 수입/지출 데이터
@@ -365,27 +399,43 @@ const getItemsForDate = (date) => {
 
 .calendar-header {
   width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  margin-left: px;
 }
 
 .today-button {
-  padding: 6px 12px;
-  background-color: #4caf50;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
+  font-size: 15px;
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #333;
   cursor: pointer;
-  transition: background-color 0.2s;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 .today-button:hover {
-  background-color: #43a047;
+  background-color: #e7fbe7;
+}
+
+.today-button:active {
+  transform: scale(0.96);
 }
 
 .selected-info {
   margin-top: 16px;
   font-size: 18px;
   font-weight: bold;
+}
+
+.icon-rotate {
+  font-size: 16px;
 }
 
 .calendar-cell {
@@ -444,7 +494,7 @@ const getItemsForDate = (date) => {
 }
 
 #filterPart {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
 }
 
@@ -644,5 +694,24 @@ const getItemsForDate = (date) => {
 ::v-deep(.my-dropdown-menu) {
   z-index: 9999;
   display: block;
+}
+
+.reset-button {
+  font-size: 15px;
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  cursor: pointer;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.reset-button:hover {
+  background-color: #ffecec;
+}
+
+.reset-button:active {
+  transform: scale(0.96);
 }
 </style>
