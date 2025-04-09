@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -154,6 +154,18 @@ onMounted(async () => {
   }
 });
 
+// showQuickCreate의 상태가 변할 때마다 body overflow를 변경
+watch(
+  () => props.showQuickCreate,
+  (newValue) => {
+    if (newValue) {
+      document.body.style.overflow = 'hidden'; // 팝업이 열리면 스크롤 잠금
+    } else {
+      document.body.style.overflow = ''; // 팝업이 닫히면 원래 상태로 되돌림
+    }
+  }
+);
+
 const submitForm = () => {
   console.log('작성된 내용:', form.value);
   closePopup();
@@ -168,7 +180,8 @@ const closePopup = () => {
 .quick-create-popup {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -178,14 +191,14 @@ const closePopup = () => {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  overflow: hidden; /* 배경이 스크롤되도록 설정 */
+  overflow: hidden; /*배경이 스크롤되도록 설정 */
 }
 
 /* vh모바일 적용 */
 
 .popup-content {
   top: 30%;
-  position: absolute;
+  /* position: absolute; */
   max-width: 900px;
   /* min-height: 400px; */
   background: #fff;

@@ -11,7 +11,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 2000;
   background-color: white; /* 배경 없으면 투명하게 뜰 수 있음 */
 }
 .header-wrapper {
