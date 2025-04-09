@@ -29,10 +29,47 @@
     <div class="byEmotion">
       <ByEmotion :selectedMonth="selectedMonth" />
     </div>
+
+    <div class="create-container">
+      <QuickButton @togglePopup="toggleQuickCreate" />
+      <QuickCreate
+        :showQuickCreate="showQuickCreate"
+        @togglePopup="toggleQuickCreate"
+      />
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import SortByLatest from '@/components/SortByLatest.vue';
+import ByEmotion from '@/components/ByEmotion.vue';
+import NetProfit from '@/components/NetProfit.vue';
+import BySpending from '@/components/BySpending.vue';
+import QuickButton from '@/components/QuickButton.vue';
+import QuickCreate from '@/components/QuickCreate.vue';
+
+const showQuickCreate = ref(false); // 팝업 상태
+const toggleQuickCreate = () => {
+  showQuickCreate.value = !showQuickCreate.value;
+};
+
+const budgetData = ref([]);
+const availableMonths = ref([]);
+const selectedMonth = ref('');
+
+// 컴포넌트가 마운트 될 때 데이터 불러오기
+onMounted(async () => {
+  const res = await axios.get('http://localhost:3000/budget');
+  budgetData.value = res.data;
+  const months = [...new Set(res.data.map((item) => item.date.slice(0, 7)))];
+  availableMonths.value = months.sort((a, b) => new Date(b) - new Date(a));
+  selectedMonth.value = availableMonths.value[0];
+});
+</script>
+
+<!-- <script>
 import SortByLatest from '@/components/SortByLatest.vue';
 import ByEmotion from '@/components/ByEmotion.vue';
 import NetProfit from '@/components/NetProfit.vue';
@@ -57,7 +94,7 @@ export default {
     this.selectedMonth = this.availableMonths[0];
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .month-selector {
@@ -135,5 +172,12 @@ select {
 /* 감정 영역 */
 .byEmotion {
   width: 100%;
+}
+
+.create-container {
+  position: fixed;
+  bottom: 50px;
+  right: 100px;
+  z-index: 1000;
 }
 </style>
