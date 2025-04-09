@@ -12,7 +12,7 @@
       </li>
     </ul>
     <br />
-    <h4><a href="#">전체 내역 보기</a></h4>
+    <h4><a href="http://localhost:5173/history">전체 내역 보기</a></h4>
   </div>
 </template>
 
