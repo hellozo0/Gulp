@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-wrapper">
-    <!-- 오늘로 이동 버튼 -->
+    <!-- ✅ 오늘로 이동 버튼 (왼쪽 상단) -->
     <div class="calendar-header">
       <button
         class="today-button"
@@ -49,6 +49,7 @@
       </template>
     </v-calendar>
 
+    <!-- ✅ 선택한 날짜 표시 -->
     <div v-if="selectedDate" class="selected-info">
       ✅ 선택한 날짜: {{ selectedDate }}
     </div>
@@ -56,33 +57,45 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
+// 🔁 상태값
 const selectedDate = ref('');
-const today = new Date().toISOString().split('T')[0];
 const currentMonth = ref(new Date());
-const calendarKey = ref(0); // ⭐ 달력 강제 리렌더링을 위한 키
+const calendarKey = ref(0);
 
+// 🗓 오늘 날짜 (정확하게 포맷팅)
+const today = formatDate(new Date());
+
+// 📌 날짜 포맷 함수 (UTC 문제 방지)
+function formatDate(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// 📌 오늘로 이동
 const goToToday = () => {
   selectedDate.value = today;
   currentMonth.value = new Date();
-  calendarKey.value += 1; // ⭐ 달력 다시 로드해서 오늘로 이동
+  calendarKey.value += 1; // 강제 리렌더링
 };
 
+// 📌 달력 페이지 이동
 const onPageUpdate = (pages) => {
   if (pages && pages.length > 0) {
     currentMonth.value = new Date(pages[0].start);
   }
 };
 
+// 📌 셀 클릭 시 선택 날짜 설정
 const onCellClick = (date) => {
   selectedDate.value = formatDate(date);
 };
 
-const formatDate = (date) => {
-  return new Date(date).toISOString().split('T')[0];
-};
-
+// 💰 예시 수입/지출 데이터
 const financeData = [
   { date: '2025-04-08', type: '지출', amount: 15000 },
   { date: '2025-04-08', type: '수입', amount: 50000 },
@@ -91,6 +104,7 @@ const financeData = [
   { date: '2025-04-11', type: '지출', amount: 7800 },
 ];
 
+// 📌 해당 날짜의 데이터 가져오기
 const getItemsForDate = (date) => {
   const key = formatDate(date);
   return financeData.filter((item) => item.date === key);
