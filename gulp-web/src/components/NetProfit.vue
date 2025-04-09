@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <!-- <h3>{{ props.selectedMonth }}</h3> -->
-    <h3>이번달은 얼마 남았을까요</h3>
+    <h2>이번달은 얼마 남았을까요</h2>
     <br />
     <div class="between">
       <p>총 수입:</p>
@@ -53,12 +53,12 @@ const totalExpense = computed(() =>
 const netIncome = computed(() => totalIncome.value - totalExpense.value);
 </script>
 <style scoped>
-h3 {
+h2 {
   font-weight: bold;
   margin: 1rem;
 }
 p {
-  font-size: 1.35rem;
+  font-size: 1.8rem;
   text-align: right;
   font-weight: bold;
   margin: 1rem;

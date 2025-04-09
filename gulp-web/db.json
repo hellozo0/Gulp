@@ -71,6 +71,14 @@
       "email": "hellozo0123@gmail.com",
       "name": "안녕주",
       "nickname": "안녕주"
+    },
+    {
+      "id": "2ebc",
+      "userId": "chae.gulp",
+      "password": "0000",
+      "email": "lcc@naver.com",
+      "name": "채곫",
+      "nickname": "채곫"
     }
   ],
   "incomeCategory": [

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <h3>내역 <br />최신순 조회</h3>
+    <h2>내역 <br />최신순 조회</h2>
 
     <ul>
       <li v-for="item in latestThree" :key="item.budgetId">
-        <h3>
+        <h2>
           {{ item.type === 'income' ? '+' : '-' }}
           {{ Number(item.money).toLocaleString() }}원
-        </h3>
+        </h2>
         <p>{{ item.date }} <br />{{ item.emotion }} | {{ item.category }}</p>
       </li>
     </ul>
     <br />
-    <h4><a href="#">전체 내역 보기</a></h4>
+    <h4><a href="http://localhost:5173/history">전체 내역 보기</a></h4>
   </div>
 </template>
 
@@ -48,6 +48,7 @@ ul {
 h4 {
   text-align: center;
   color: black;
+  font-size: 1.7rem;
 }
 a {
   color: black;
@@ -62,6 +63,12 @@ h3 {
   margin: 1rem;
 }
 p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.479);
+}
+h2 {
+  font-weight: bold;
+  margin: 1rem;
 }
 </style>

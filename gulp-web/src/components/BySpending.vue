@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>지출 상위 4개 항목</h3>
+    <h2>지출 상위 4개 항목</h2>
     <br />
     <canvas ref="barChart"></canvas>
   </div>
@@ -59,6 +59,7 @@ const renderChart = (labels, data) => {
     chartInstance.destroy();
   }
 
+  // chart.js
   chartInstance = new Chart(barChart.value, {
     type: 'bar',
     data: {
@@ -67,13 +68,21 @@ const renderChart = (labels, data) => {
         {
           label: '지출 금액 (원)',
           data,
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#AAA'],
-          borderRadius: 8,
-          barThickness: 30,
+          backgroundColor: [
+            '#F5EEDC',
+            '#FFB22C',
+            '#854836',
+            '#000000',
+            '#706D54',
+          ],
+          borderRadius: 18,
+          barThickness: 50,
           barPercentage: 0.6,
           categoryPercentage: 0.8,
         },
       ],
+      borderColor: '#fffce6', // 원하는 테두리 색
+      borderWidth: 4,
     },
     options: {
       indexAxis: 'y',
@@ -95,7 +104,13 @@ const renderChart = (labels, data) => {
             display: false,
           },
           ticks: {
-            callback: (value) => `${value.toLocaleString()}원`,
+            stepSize: 50000,
+            callback: (value) => `${value.toLocaleString()}`,
+          },
+        },
+        y: {
+          grid: {
+            display: false,
           },
         },
       },
@@ -142,7 +157,7 @@ watch(() => props.selectedMonth, fetchData);
 </script>
 
 <style scoped>
-h3 {
+h2 {
   font-weight: bold;
   margin: 1rem;
 }
