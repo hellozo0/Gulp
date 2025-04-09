@@ -124,6 +124,7 @@ const form = ref({
   emotion: '',
   date: today,
   memo: '',
+  type: 'income',
 });
 
 const categories = ref([]);
@@ -183,6 +184,7 @@ onMounted(async () => {
     emotions.value = emotionRes.data;
 
     // 카테고리와 감정에 첫 번째 항목을 기본값으로 설정
+    form.value.type = 'income';
     form.value.category = categories.value[0]?.name || '';
     form.value.emotion = emotions.value[0]?.name || '';
   } catch (error) {
@@ -201,13 +203,49 @@ watch(
   }
 );
 
-const submitForm = () => {
-  console.log('작성된 내용:', form.value);
-  closePopup();
+const submitForm = async () => {
+  const user = JSON.parse(localStorage.getItem('user')); // 로컬 스토리지에서 userId 가져오기
+  const user_Id = user?.id; // userId가 존재하는 경우 가져오기
+
+  const payload = {
+    userId: user_Id, // 로컬 스토리지에서 가져온 userId
+    budgetId: Math.random().toString(36).substring(7), // 랜덤한 budgetId 생성
+    date: form.value.date,
+    type: form.value.type,
+    money: formattedAmount.value.replace(/,/g, ''), // 쉼표 제거한 금액
+    category: form.value.category,
+    memo: form.value.memo,
+    emotion: form.value.emotion,
+    id: Math.random().toString(36).substring(7), // 랜덤한 id 생성
+  };
+
+  try {
+    const res = await fetch('http://localhost:3000/budget', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      console.log('예산이 성공적으로 저장되었습니다.' + `${payload}`);
+      closePopup(); // 팝업 닫기
+    } else {
+      console.error('예산 저장 실패:', await res.text());
+    }
+  } catch (error) {
+    console.error('네트워크 오류:', error);
+  }
 };
 
 const closePopup = () => {
   // showQuickCreate.value = false;
+  form.value = {
+    amount: '',
+    category: '',
+    emotion: '',
+    date: today, // 오늘 날짜로 초기화
+    memo: '',
+  };
   emit('togglePopup');
 };
 </script>
