@@ -158,6 +158,7 @@
               justify-content: space-between;
               margin-bottom: 12px;
             "
+            @click="openDetail(item)"
           >
             <!-- 왼쪽: 이미지 + 텍스트 묶음 -->
             <div style="display: flex; align-items: center">
@@ -189,6 +190,14 @@
       </div>
     </div>
   </main>
+  <TransactionModal
+    v-if="selectedItem"
+    :data="selectedItem"
+    @close="selectedItem = null"
+    @edit="editItem"
+    @delete="handleDelete"
+    @update="handleUpdate"
+  />
 </template>
 
 <script setup>
@@ -201,6 +210,25 @@ import regret from '@/assets/images/regret.png';
 import what from '@/assets/images/question.png';
 import { useBudgetStore } from '@/stores/budgetStore.js';
 import { computed } from 'vue';
+import TransactionModal from '@/components/TransactionModal.vue';
+
+const selectedItem = ref(null);
+
+const handleDelete = async (id) => {
+  try {
+    await budgetStore.deleteBudget(id);
+    await budgetStore.fetchBudgetByDate();
+    refreshKey.value++;
+    selectedItem.value = null;
+  } catch (err) {
+    console.error('❌ 삭제 실패:', err);
+  }
+};
+
+const handleUpdate = async (updatedItem) => {
+  await budgetStore.fetchBudgetByDate(); // 또는 local 배열 갱신
+  selectedItem.value = null; // 모달 닫기
+};
 
 const budgetStore = useBudgetStore();
 const isOpen = ref(false);
@@ -386,6 +414,18 @@ const getItemsForDate = (date) => {
   const key = formatDate(date);
   return financeData.filter((item) => item.date === key);
 };
+
+const openDetail = (item) => {
+  selectedItem.value = item;
+};
+
+const editItem = (item) => {
+  console.log('✏ 수정 요청:', item);
+};
+
+// const deleteItem = (id) => {
+//   console.log('🗑 삭제 요청:', id);
+// };
 </script>
 
 <style scoped>
