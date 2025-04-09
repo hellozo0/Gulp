@@ -113,6 +113,7 @@ select {
   background-color: #fff;
   /* padding: 2rem; */
   width: 100%;
+  height: 10rem;
   padding: 1.5rem;
 
   height: 300px;
@@ -135,5 +136,6 @@ select {
 /* 감정 영역 */
 .byEmotion {
   width: 100%;
+  height: 200%;
 }
 </style>
