@@ -77,6 +77,7 @@
             </div>
           </div>
         </div>
+
         <!-- 메모 -->
         <div class="input-group">
           <label for="description">메모</label>
@@ -87,8 +88,10 @@
           ></textarea>
         </div>
         <div class="button-group">
-          <button type="submit">작성하기</button>
-          <button type="button" @click="closePopup">취소하기</button>
+          <button type="submit" class="submit-btn">작성하기</button>
+          <button type="button" class="cancel-btn" @click="closePopup">
+            취소하기
+          </button>
         </div>
       </form>
     </div>
@@ -169,29 +172,30 @@ const closePopup = () => {
   background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 처리 */
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
+  /* align-items: center;
+   */
+  align-items: flex-start;
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4); /* 배경 어둡게 처리 */
+  z-index: 9999;
+  overflow-y: hidden; /* 배경이 스크롤되도록 설정 */
 }
 
 .popup-content {
-  position: relative;
+  top: 30%;
+  position: absolute;
+  max-width: 900px;
+  min-height: 400px;
   background: #fff;
   padding: 30px;
   width: 100%;
-  max-width: 500px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   animation: fadeIn 0.3s ease-out;
+  max-height: 80%; /* 최대 높이 설정, 내용이 많으면 스크롤 됨 */
+  overflow-y: auto; /* 팝업 안에서 스크롤 */
+  /* padding-right: 10px; */
+  /* cursor: move; */
 }
 
 .quick-create-popup .close-btn {
@@ -223,6 +227,13 @@ textarea {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.category-options,
+.emotion-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .submit_btn {
