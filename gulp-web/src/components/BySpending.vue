@@ -59,6 +59,7 @@ const renderChart = (labels, data) => {
     chartInstance.destroy();
   }
 
+  // chart.js
   chartInstance = new Chart(barChart.value, {
     type: 'bar',
     data: {
