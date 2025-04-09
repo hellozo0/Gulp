@@ -1,101 +1,103 @@
 <template>
-  <div v-if="showQuickCreate" class="quick-create-popup">
-    <div class="overlay" @click="closePopup"></div>
-    <div class="popup-content">
-      <!-- X 버튼 -->
-      <button class="close-btn" @click="closePopup">X</button>
+  <teleport to="#modal">
+    <div v-if="showQuickCreate" class="quick-create-popup">
+      <div class="overlay" @click="closePopup"></div>
+      <div class="popup-content">
+        <!-- X 버튼 -->
+        <button class="close-btn" @click="closePopup">X</button>
 
-      <!-- 폼 -->
-      <h2>소비 이력 작성</h2>
-      <form @submit.prevent="submitForm">
-        <!-- 금액 -->
-        <div class="input-group">
-          <label for="amount">금액</label>
-          <input
-            type="number"
-            v-model="form.amount"
-            placeholder="금액을 입력하세요"
-            required
-          />
-        </div>
-        <!-- 분류 선택 -->
-        <div class="input-group">
-          <label for="type">분류</label>
-          <div class="type-options">
-            <div
-              :class="['type-option', { selected: form.type === 'income' }]"
-              @click="form.type = 'income'"
-            >
-              수입
-            </div>
-            <div
-              :class="['type-option', { selected: form.type === 'expense' }]"
-              @click="form.type = 'expense'"
-            >
-              지출
+        <!-- 폼 -->
+        <h2>소비 이력 작성</h2>
+        <form @submit.prevent="submitForm">
+          <!-- 금액 -->
+          <div class="input-group">
+            <label for="amount">금액</label>
+            <input
+              type="number"
+              v-model="form.amount"
+              placeholder="금액을 입력하세요"
+              required
+            />
+          </div>
+          <!-- 분류 선택 -->
+          <div class="input-group">
+            <label for="type">분류</label>
+            <div class="type-options">
+              <div
+                :class="['type-option', { selected: form.type === 'income' }]"
+                @click="form.type = 'income'"
+              >
+                수입
+              </div>
+              <div
+                :class="['type-option', { selected: form.type === 'expense' }]"
+                @click="form.type = 'expense'"
+              >
+                지출
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 날짜 -->
-        <div class="input-group">
-          <label for="date">날짜</label>
-          <input type="date" v-model="form.date" required />
-        </div>
-        <!-- 카테고리 선택 -->
-        <div class="input-group">
-          <label for="category">카테고리</label>
-          <div class="category-options">
-            <div
-              v-for="category in categories"
-              :key="category"
-              :class="[
-                'category-option',
-                { selected: form.category === category },
-              ]"
-              @click="form.category = category"
-            >
-              {{ category }}
+          <!-- 날짜 -->
+          <div class="input-group">
+            <label for="date">날짜</label>
+            <input type="date" v-model="form.date" required />
+          </div>
+          <!-- 카테고리 선택 -->
+          <div class="input-group">
+            <label for="category">카테고리</label>
+            <div class="category-options">
+              <div
+                v-for="category in categories"
+                :key="category"
+                :class="[
+                  'category-option',
+                  { selected: form.category === category },
+                ]"
+                @click="form.category = category"
+              >
+                {{ category }}
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 소비 감정 선택 -->
-        <div class="input-group">
-          <label for="emotion">소비감정</label>
-          <div class="emotion-options">
-            <div
-              v-for="emotion in emotions"
-              :key="emotion"
-              :class="[
-                'emotion-option',
-                { selected: form.emotion === emotion },
-              ]"
-              @click="form.emotion = emotion"
-            >
-              {{ emotion }}
+          <!-- 소비 감정 선택 -->
+          <div class="input-group">
+            <label for="emotion">소비감정</label>
+            <div class="emotion-options">
+              <div
+                v-for="emotion in emotions"
+                :key="emotion"
+                :class="[
+                  'emotion-option',
+                  { selected: form.emotion === emotion },
+                ]"
+                @click="form.emotion = emotion"
+              >
+                {{ emotion }}
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 메모 -->
-        <div class="input-group">
-          <label for="description">메모</label>
-          <textarea
-            v-model="form.memo"
-            placeholder="메모를 입력하세요"
-            rows="4"
-          ></textarea>
-        </div>
-        <div class="button-group">
-          <button type="submit" class="submit-btn">작성하기</button>
-          <button type="button" class="cancel-btn" @click="closePopup">
-            취소하기
-          </button>
-        </div>
-      </form>
+          <!-- 메모 -->
+          <div class="input-group">
+            <label for="description">메모</label>
+            <textarea
+              v-model="form.memo"
+              placeholder="메모를 입력하세요"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="button-group">
+            <button type="submit" class="submit-btn">작성하기</button>
+            <button type="button" class="cancel-btn" @click="closePopup">
+              취소하기
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script setup>
@@ -164,7 +166,9 @@ const closePopup = () => {
 
 <style scoped>
 .quick-create-popup {
-  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -172,30 +176,27 @@ const closePopup = () => {
   background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 처리 */
   display: flex;
   justify-content: center;
-  /* align-items: center;
-   */
-  align-items: flex-start;
-
+  align-items: center;
   z-index: 9999;
-  overflow-y: hidden; /* 배경이 스크롤되도록 설정 */
+  overflow: hidden; /* 배경이 스크롤되도록 설정 */
 }
+
+/* vh모바일 적용 */
 
 .popup-content {
   top: 30%;
   position: absolute;
   max-width: 900px;
-  min-height: 400px;
+  /* min-height: 400px; */
   background: #fff;
   padding: 30px;
-  width: 100%;
+  /* width: 100%; */
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   animation: fadeIn 0.3s ease-out;
   max-height: 80%; /* 최대 높이 설정, 내용이 많으면 스크롤 됨 */
   overflow-y: auto; /* 팝업 안에서 스크롤 */
-  /* padding-right: 10px; */
-  /* cursor: move; */
 }
 
 .quick-create-popup .close-btn {
