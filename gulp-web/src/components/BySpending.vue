@@ -76,7 +76,7 @@ const renderChart = (labels, data) => {
             '#706D54',
           ],
           borderRadius: 18,
-          barThickness: 60,
+          barThickness: 50,
           barPercentage: 0.6,
           categoryPercentage: 0.8,
         },
