@@ -1,107 +1,112 @@
 <template>
   <teleport to="#modal">
     <div v-if="showQuickCreate" class="quick-create-popup">
+      <div class="modal-scroll"></div>
       <div class="overlay" @click="closePopup"></div>
       <div class="popup-content">
         <!-- X 버튼 -->
-        <button class="close-btn" @click="closePopup">X</button>
-
-        <!-- 폼 -->
-        <form @submit.prevent="submitForm">
-          <!-- 금액 -->
-          <div class="input-group">
-            <div class="amount-container">
-              <input
-                type="text"
-                id="amount"
-                v-model="formattedAmount"
-                @input="formatNumber"
-                class="input-amount"
-                required
-                ref="amountInput"
-              />
-              <span class="currency" :style="currencyPositionStyle">원</span>
-            </div>
-          </div>
-          <!-- 분류 선택 -->
-          <div class="input-group">
-            <label for="type">분류</label>
-            <div class="type-options">
-              <div
-                :class="['type-option', { selected: form.type === 'income' }]"
-                @click="form.type = 'income'"
-              >
-                수입
-              </div>
-              <div
-                :class="['type-option', { selected: form.type === 'expense' }]"
-                @click="form.type = 'expense'"
-              >
-                지출
+        <button class="close-btn" @click="closePopup">x</button>
+        <div class="modal-scroll">
+          <!-- 폼 -->
+          <form @submit.prevent="submitForm">
+            <!-- 금액 -->
+            <div class="input-group">
+              <div class="amount-container">
+                <input
+                  type="text"
+                  id="amount"
+                  v-model="formattedAmount"
+                  @input="formatNumber"
+                  class="input-amount"
+                  required
+                  ref="amountInput"
+                />
+                <span class="currency">원</span>
               </div>
             </div>
-          </div>
-
-          <!-- 날짜 -->
-          <div class="input-group">
-            <label for="date">날짜</label>
-            <div class="date-container">
-              <input type="date" v-model="form.date" required />
-            </div>
-          </div>
-
-          <!-- 카테고리 선택 -->
-          <div class="input-group">
-            <label for="category">카테고리</label>
-            <div class="category-options">
-              <div
-                v-for="category in categories"
-                :key="category.id"
-                :class="[
-                  'category-option option-item',
-                  { selected: form.category === category.name },
-                ]"
-                @click="form.category = category.name"
-              >
-                {{ category.name }}
+            <!-- 분류 선택 -->
+            <div class="input-group">
+              <label for="type">분류</label>
+              <div class="type-options">
+                <div
+                  :class="['type-option', { selected: form.type === 'income' }]"
+                  @click="form.type = 'income'"
+                >
+                  수입
+                </div>
+                <div
+                  :class="[
+                    'type-option',
+                    { selected: form.type === 'expense' },
+                  ]"
+                  @click="form.type = 'expense'"
+                >
+                  지출
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 소비 감정 선택 -->
-          <div class="input-group">
-            <label for="emotion">소비감정</label>
-            <div class="emotion-options">
-              <div
-                v-for="emotion in emotions"
-                :key="emotion.id"
-                :class="[
-                  'emotion-option option-item',
-                  { selected: form.emotion === emotion.name },
-                ]"
-                @click="form.emotion = emotion.name"
-              >
-                {{ emotion.name }}
+            <!-- 날짜 -->
+            <div class="input-group">
+              <label for="date">날짜</label>
+              <div class="date-container">
+                <input type="date" v-model="form.date" required />
               </div>
             </div>
-          </div>
 
-          <!-- 메모 -->
-          <div class="input-group">
-            <label for="description">메모</label>
-            <textarea
-              v-model="form.memo"
-              placeholder="메모를 입력하세요"
-              rows="4"
-            ></textarea>
-          </div>
-          <div class="button-group">
-            <button type="submit" class="submit-btn">작성하기</button>
-            <button type="button" class="cancel-btn" @click="closePopup">
-              취소하기
-            </button>
-          </div>
-        </form>
+            <!-- 카테고리 선택 -->
+            <div class="input-group">
+              <label for="category">카테고리</label>
+              <div class="category-options">
+                <div
+                  v-for="category in categories"
+                  :key="category.id"
+                  :class="[
+                    'category-option option-item',
+                    { selected: form.category === category.name },
+                  ]"
+                  @click="form.category = category.name"
+                >
+                  {{ category.name }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 소비 감정 선택 -->
+            <div class="input-group">
+              <label for="emotion">소비감정</label>
+              <div class="emotion-options">
+                <div
+                  v-for="emotion in emotions"
+                  :key="emotion.id"
+                  :class="[
+                    'emotion-option option-item',
+                    { selected: form.emotion === emotion.name },
+                  ]"
+                  @click="form.emotion = emotion.name"
+                >
+                  {{ emotion.name }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 메모 -->
+            <div class="input-group">
+              <label for="description">메모</label>
+              <textarea
+                v-model="form.memo"
+                placeholder="메모를 입력하세요"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="button-group">
+              <button type="submit" class="submit-btn">작성하기</button>
+              <button type="button" class="cancel-btn" @click="closePopup">
+                취소하기
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </teleport>
@@ -154,17 +159,17 @@ const formatNumber = () => {
 
   formattedAmount.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   formattedAmount.value = `${formattedAmount.value}`;
-  updateCurrencyPosition();
+  // updateCurrencyPosition();
 };
 
-const updateCurrencyPosition = () => {
-  const inputText = formattedAmount.value;
-  const inputWidth = getTextWidth(inputText); // 텍스트 길이에 맞게 너비 계산
-  const newLeftPosition = `${inputWidth + 15}px`; // 원은 숫자 뒤에 고정, 15px 여백
-  currencyPositionStyle.value = { left: newLeftPosition }; // "원"의 위치를 업데이트
-};
+// const updateCurrencyPosition = () => {
+//   const inputText = formattedAmount.value;
+//   const inputWidth = getTextWidth(inputText); // 텍스트 길이에 맞게 너비 계산
+//   const newLeftPosition = `${inputWidth + 15}px`; // 원은 숫자 뒤에 고정, 15px 여백
+//   currencyPositionStyle.value = { left: newLeftPosition }; // "원"의 위치를 업데이트
+// };
 
-watch(formattedAmount, updateCurrencyPosition);
+// watch(formattedAmount, updateCurrencyPosition);
 
 onMounted(async () => {
   try {
@@ -268,22 +273,30 @@ const closePopup = () => {
 }
 
 .popup-content {
-  top: 30%;
+  position: fixed;
   max-width: 900px;
+  width: 100%;
   background: #fff;
-  padding: 120px 130px 80px 130px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   animation: fadeIn 0.3s ease-out;
-  max-height: 80%;
-  overflow-y: auto; /* 팝업 안에서 스크롤 */
+  overflow: hidden; /* 스크롤을 내부로 제한 */
+}
+
+.modal-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 120px 130px 80px 130px;
+  box-sizing: border-box;
+  border-radius: inherit; /* 부모의 둥근 모서리 상속 */
+  scrollbar-gutter: stable;
 }
 
 .quick-create-popup .close-btn {
   position: absolute;
   top: 15%;
-  right: 28%;
+  right: 10%;
   background: none;
   border: none;
   font-size: 35px;
