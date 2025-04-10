@@ -3,7 +3,8 @@
     <div class="modal-content">
       <button class="close-top" @click="close">×</button>
 
-      <h2>{{ props.data.money }}원</h2>
+      <h2>{{ Number(props.data.money).toLocaleString() }}원</h2>
+      <hr />
 
       <div class="field">
         <label>분류</label>
@@ -51,7 +52,7 @@
       />
     </div>
 
-    <!-- ✅ 삭제 확인 팝업 -->
+    <!-- 삭제 확인 팝업 -->
     <div class="confirm-overlay" v-if="showConfirm">
       <div class="confirm-box">
         <div class="icon-circle">
@@ -69,21 +70,23 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import axios from 'axios';
-import EditModal from './EditModal.vue'; // 🧩 새 모달 컴포넌트 임포트
+import { useBudgetStore } from '@/stores/budgetStore.js';
+import EditModal from './EditModal.vue';
 
 const props = defineProps({
   data: Object,
 });
 const emit = defineEmits(['close', 'edit', 'delete']);
 const showConfirm = ref(false);
-const isEditMode = ref(false); // ✨ 수정 모드 상태 추가
+const isEditMode = ref(false);
+
+const budgetStore = useBudgetStore();
 
 const close = () => emit('close');
 
 const confirmDelete = async () => {
   try {
-    await axios.delete(`http://localhost:3000/budget/${props.data.id}`);
+    await budgetStore.deleteBudget(props.data.id);
     emit('delete', props.data.id);
     showConfirm.value = false;
     close();
@@ -99,7 +102,7 @@ const openEdit = () => {
 
 const closeEditModal = () => {
   isEditMode.value = false;
-  close(); // 현재 모달도 닫고 싶으면 유지
+  close();
 };
 
 onMounted(() => {
@@ -112,6 +115,8 @@ onUnmounted(() => {
 
 <style scoped>
 .modal-overlay {
+  width: 100vw;
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
@@ -129,7 +134,7 @@ onUnmounted(() => {
   border-radius: 10px;
   padding: 24px;
   width: 500px;
-  max-width: 90%;
+  max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
@@ -139,7 +144,7 @@ onUnmounted(() => {
 }
 
 h2 {
-  margin-bottom: 16px;
+  margin-top: 16px;
   font-size: 20px;
   font-weight: bold;
 }
@@ -149,7 +154,6 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: bold;
 }
 
 .field label {
@@ -193,7 +197,7 @@ h2 {
 
 .memo-box {
   margin-top: 6px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 6px;
   background-color: #f9f9f9;
   padding: 12px;
@@ -246,7 +250,6 @@ h2 {
   color: #444;
 }
 
-/* ✅ 삭제 팝업 */
 .confirm-overlay {
   position: fixed;
   top: 0;

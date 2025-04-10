@@ -214,22 +214,6 @@ import TransactionModal from '@/components/TransactionModal.vue';
 
 const selectedItem = ref(null);
 
-const handleDelete = async (id) => {
-  try {
-    await budgetStore.deleteBudget(id);
-    await budgetStore.fetchBudgetByDate();
-    refreshKey.value++;
-    selectedItem.value = null;
-  } catch (err) {
-    console.error('❌ 삭제 실패:', err);
-  }
-};
-
-const handleUpdate = async (updatedItem) => {
-  await budgetStore.fetchBudgetByDate(); // 또는 local 배열 갱신
-  selectedItem.value = null; // 모달 닫기
-};
-
 const budgetStore = useBudgetStore();
 const isOpen = ref(false);
 const selectedPeriod = ref('일별');
