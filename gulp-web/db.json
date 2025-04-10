@@ -21,7 +21,7 @@
       "userId": "hellozo0",
       "password": "hellozo0",
       "email": "hellozo0@gmail.com",
-      "name": "hellozo0",
+      "name": "h ellozo0",
       "nickname": "hellozo012"
     },
     {
@@ -1064,12 +1064,232 @@
       "userId": "1",
       "budgetId": "91",
       "date": "2025-01-10",
-      "type": "income",
+      "type": "expense",
       "money": "42892",
+      "category": "대출",
+      "memo": "대출 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "64a4"
+    },
+    {
+      "userId": "1",
+      "budgetId": "101",
+      "date": "2025-04-01",
+      "type": "income",
+      "money": "74500",
+      "category": "급여",
+      "memo": "급여 관련 거래입니다.",
+      "emotion": "설렘",
+      "id": "a101"
+    },
+    {
+      "userId": "1",
+      "budgetId": "102",
+      "date": "2025-04-02",
+      "type": "income",
+      "money": "53000",
+      "category": "그외",
+      "memo": "그외 관련 거래입니다.",
+      "emotion": "후회",
+      "id": "a102"
+    },
+    {
+      "userId": "1",
+      "budgetId": "103",
+      "date": "2025-04-02",
+      "type": "income",
+      "money": "31000",
+      "category": "용돈",
+      "memo": "용돈 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a103"
+    },
+    {
+      "userId": "1",
+      "budgetId": "104",
+      "date": "2025-04-03",
+      "type": "income",
+      "money": "66000",
+      "category": "급여",
+      "memo": "급여 관련 거래입니다.",
+      "emotion": "스트레스",
+      "id": "a104"
+    },
+    {
+      "userId": "1",
+      "budgetId": "105",
+      "date": "2025-04-03",
+      "type": "income",
+      "money": "28400",
+      "category": "그외",
+      "memo": "그외 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a105"
+    },
+    {
+      "userId": "1",
+      "budgetId": "106",
+      "date": "2025-04-04",
+      "type": "income",
+      "money": "89300",
+      "category": "급여",
+      "memo": "급여 관련 거래입니다.",
+      "emotion": "의무감",
+      "id": "a106"
+    },
+    {
+      "userId": "1",
+      "budgetId": "107",
+      "date": "2025-04-04",
+      "type": "income",
+      "money": "33500",
+      "category": "용돈",
+      "memo": "용돈 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a107"
+    },
+    {
+      "userId": "1",
+      "budgetId": "108",
+      "date": "2025-04-05",
+      "type": "expense",
+      "money": "44000",
+      "category": "대출",
+      "memo": "대출 관련 거래입니다.",
+      "emotion": "스트레스",
+      "id": "a108"
+    },
+    {
+      "userId": "1",
+      "budgetId": "109",
+      "date": "2025-04-06",
+      "type": "expense",
+      "money": "59800",
+      "category": "쇼핑",
+      "memo": "쇼핑 관련 거래입니다.",
+      "emotion": "설렘",
+      "id": "a109"
+    },
+    {
+      "userId": "1",
+      "budgetId": "110",
+      "date": "2025-04-07",
+      "type": "income",
+      "money": "74300",
+      "category": "급여",
+      "memo": "급여 관련 거래입니다.",
+      "emotion": "설렘",
+      "id": "a110"
+    },
+    {
+      "userId": "1",
+      "budgetId": "111",
+      "date": "2025-04-07",
+      "type": "income",
+      "money": "22000",
+      "category": "그외",
+      "memo": "그외 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a111"
+    },
+    {
+      "userId": "1",
+      "budgetId": "112",
+      "date": "2025-04-08",
+      "type": "income",
+      "money": "32600",
+      "category": "용돈",
+      "memo": "용돈 관련 거래입니다.",
+      "emotion": "후회",
+      "id": "a112"
+    },
+    {
+      "userId": "1",
+      "budgetId": "113",
+      "date": "2025-04-08",
+      "type": "expense",
+      "money": "56000",
+      "category": "유흥",
+      "memo": "유흥 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a113"
+    },
+    {
+      "userId": "1",
+      "budgetId": "114",
+      "date": "2025-04-09",
+      "type": "income",
+      "money": "40500",
+      "category": "그외",
+      "memo": "그외 관련 거래입니다.",
+      "emotion": "설렘",
+      "id": "a114"
+    },
+    {
+      "userId": "1",
+      "budgetId": "115",
+      "date": "2025-04-09",
+      "type": "income",
+      "money": "37200",
+      "category": "용돈",
+      "memo": "용돈 관련 거래입니다.",
+      "emotion": "스트레스",
+      "id": "a115"
+    },
+    {
+      "userId": "1",
+      "budgetId": "116",
+      "date": "2025-04-10",
+      "type": "expense",
+      "money": "48700",
+      "category": "식비",
+      "memo": "식비 관련 거래입니다.",
+      "emotion": "설렘",
+      "id": "a116"
+    },
+    {
+      "userId": "1",
+      "budgetId": "117",
+      "date": "2025-04-10",
+      "type": "income",
+      "money": "22400",
+      "category": "그외",
+      "memo": "그외 관련 거래입니다.",
+      "emotion": "의무감",
+      "id": "a117"
+    },
+    {
+      "userId": "1",
+      "budgetId": "118",
+      "date": "2025-04-11",
+      "type": "income",
+      "money": "69900",
       "category": "급여",
       "memo": "급여 관련 거래입니다.",
       "emotion": "행복",
-      "id": "64a4"
+      "id": "a118"
+    },
+    {
+      "userId": "1",
+      "budgetId": "119",
+      "date": "2025-04-11",
+      "type": "income",
+      "money": "38000",
+      "category": "용돈",
+      "memo": "용돈 관련 거래입니다.",
+      "emotion": "모름(기타)",
+      "id": "a119"
+    },
+    {
+      "userId": "1",
+      "budgetId": "120",
+      "date": "2025-04-11",
+      "type": "expense",
+      "money": "52000",
+      "category": "대출",
+      "memo": "대출 관련 거래입니다.",
+      "emotion": "행복",
+      "id": "a120"
     }
   ]
 }
