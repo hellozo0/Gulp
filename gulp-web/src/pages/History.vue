@@ -1,53 +1,78 @@
 <template>
   <div class="calendar-wrapper">
     <!-- 📅 달력 -->
-    <v-calendar
-      :key="calendarKey"
-      is-expanded
-      :locale="'ko-KR'"
-      :from-page="currentMonth"
-      show-day-popover="false"
-      @update:pages="onPageUpdate"
-      style="width: 1000px; margin: 0 auto"
-    >
-      <template #day-content="{ day }">
-        <div
-          class="calendar-cell"
-          :class="{
-            selected: formatDate(day.date) === selectedDate,
-            today: formatDate(day.date) === today,
-          }"
-          @click="onCellClick(day.date)"
-        >
-          <div class="day-number">{{ day.day }}</div>
-          <div class="finance-list">
+    <div class="calendar-inner">
+      <img
+        src="@/assets/images/2025honey.png"
+        alt="2025bear"
+        width="300px"
+        class="honey-on-calendar"
+      />
+      <v-calendar
+        :key="calendarKey"
+        is-expanded
+        :locale="'ko-KR'"
+        :from-page="currentMonth"
+        show-day-popover="false"
+        @update:pages="onPageUpdate"
+        style="width: 1000px; margin: 0 auto"
+      >
+        <template #day-content="{ day }">
+          <div
+            class="calendar-cell"
+            :class="{
+              selected: formatDate(day.date) === selectedDate,
+              today: formatDate(day.date) === today,
+            }"
+            @click="onCellClick(day.date)"
+          >
+            <div class="day-number">{{ day.day }}</div>
+
+            <!-- 총 수입/지출 표시 -->
             <div
-              v-for="item in getItemsForDate(day.date)"
-              :key="item.date + item.amount + item.type"
-              :class="[
-                item.type === '수입' ? 'income' : 'expense',
-                'finance-item',
-              ]"
+              class="day-total tooltip-wrapper"
+              @mouseover="hoveredDate = formatDate(day.date)"
+              @mouseleave="hoveredDate = ''"
             >
-              {{ item.type === '수입' ? '+' : '-' }}₩{{
-                item.amount.toLocaleString()
-              }}
+              <div v-if="getSumForDate(day.date).income" class="income">
+                +₩{{ getSumForDate(day.date).income.toLocaleString() }}
+              </div>
+              <div v-if="getSumForDate(day.date).expense" class="expense">
+                -₩{{ getSumForDate(day.date).expense.toLocaleString() }}
+              </div>
+            </div>
+            <!-- 툴팁바 -->
+            <div
+              v-if="hoveredDate === formatDate(day.date)"
+              class="tooltip-box"
+            >
+              <div
+                v-for="(item, idx) in getItemsForDate(day.date).slice(0, 3)"
+                :key="idx"
+                class="tooltip-line"
+              >
+                {{ item.category }} |
+                {{ item.type === 'income' ? '+' : '-' }}₩{{
+                  Number(item.money).toLocaleString()
+                }}
+              </div>
+              <!-- 3개 초과 시 생략 표시 -->
+              <div
+                v-if="getItemsForDate(day.date).length > 3"
+                class="tooltip-line"
+                style="text-align: center; font-weight: bold"
+              >
+                ...
+              </div>
+              <img
+                src="@/assets/images/HappyHoney.png"
+                alt="HappyHoney"
+                class="tooltip-honey"
+              />
             </div>
           </div>
-        </div>
-      </template>
-    </v-calendar>
-
-    <!-- ✅ 선택한 날짜 표시 -->
-    <div v-if="selectedDate" class="selected-info">
-      <label style="cursor: pointer">
-        <input
-          type="checkbox"
-          v-model="isDateSelected"
-          @change="toggleSelectedDate"
-        />
-        <span style="margin-left: 8px">선택한 날짜: {{ selectedDate }}</span>
-      </label>
+        </template>
+      </v-calendar>
     </div>
   </div>
 
@@ -55,6 +80,20 @@
 
   <main id="filterPart">
     <div class="dropdown-container">
+      <div
+        v-if="selectedDate"
+        class="selected-info"
+        style="margin-bottom: 10px"
+      >
+        <label style="cursor: pointer">
+          <input
+            type="checkbox"
+            v-model="isDateSelected"
+            @change="toggleSelectedDate"
+          />
+          <span style="margin-left: 8px">선택한 날짜: {{ selectedDate }}</span>
+        </label>
+      </div>
       <div class="filter-top-row">
         <div class="dropdown-trigger" @click="toggleDropdown">
           전체
@@ -262,7 +301,12 @@ const toggleSelectedDate = () => {
 onMounted(() => {
   budgetStore.fetchBudgetByDate(); // 데이터 로드
 });
+const hoveredDate = ref('');
 
+function getItemsForDate(date) {
+  const target = formatDate(date);
+  return budgetStore.groupedBudget[target] || [];
+}
 const groupedBudgetByPeriod = computed(() => {
   const raw = budgetStore.getGroupedBudgetByPeriod(selectedPeriod.value);
 
@@ -278,7 +322,6 @@ const groupedBudgetByPeriod = computed(() => {
     }
     return new Date(label);
   };
-
   const sorted = Object.entries(raw)
     .sort((a, b) => {
       const aDate = parseKey(a[0]);
@@ -337,7 +380,17 @@ function getEmotionImage(emotion) {
   else if (emotion === '후회') return regret;
   else return what;
 }
+function getSumForDate(date) {
+  const target = formatDate(date);
+  const result = { income: 0, expense: 0 };
 
+  const items = budgetStore.groupedBudget[target] || [];
+  for (const item of items) {
+    if (item.type === 'income') result.income += Number(item.money);
+    else if (item.type === 'expense') result.expense += Number(item.money);
+  }
+  return result;
+}
 function toggleDropdown() {
   console.log('열림');
   isOpen.value = !isOpen.value;
@@ -384,21 +437,6 @@ const onCellClick = (date) => {
   }
 };
 
-// 💰 예시 수입/지출 데이터
-const financeData = [
-  { date: '2025-04-08', type: '지출', amount: 15000 },
-  { date: '2025-04-08', type: '수입', amount: 50000 },
-  { date: '2025-04-09', type: '지출', amount: 32000 },
-  { date: '2025-04-11', type: '수입', amount: 30000 },
-  { date: '2025-04-11', type: '지출', amount: 7800 },
-];
-
-// 📌 해당 날짜의 데이터 가져오기
-const getItemsForDate = (date) => {
-  const key = formatDate(date);
-  return financeData.filter((item) => item.date === key);
-};
-
 const openDetail = (item) => {
   selectedItem.value = item;
 };
@@ -419,6 +457,25 @@ const editItem = (item) => {
   align-items: flex-start;
   padding: 24px;
   gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.calendar-inner {
+  position: relative;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.honey-on-calendar {
+  position: absolute;
+  top: -88px;
+  right: -70px;
+  width: 160px;
+  max-width: 18%;
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .calendar-header {
@@ -426,7 +483,6 @@ const editItem = (item) => {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 12px;
-  margin-left: px;
 }
 
 .today-button {
@@ -466,8 +522,8 @@ const editItem = (item) => {
   width: 100%;
   min-height: 100px;
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  /* border: 1px solid #ddd;
+  border-radius: 6px; */
   background-color: #fff;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -476,6 +532,9 @@ const editItem = (item) => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  overflow: visible;
+  z-index: 1;
+  background-color: #fffbe6;
 }
 
 .calendar-cell:hover {
@@ -712,6 +771,8 @@ const editItem = (item) => {
 }
 
 .calendar-wrapper {
+  position: relative;
+  z-index: 10;
   overflow: visible;
 }
 
@@ -737,5 +798,96 @@ const editItem = (item) => {
 
 .reset-button:active {
   transform: scale(0.96);
+}
+
+.day-total {
+  margin-top: 28px;
+  font-size: 12px;
+  width: 100%;
+  line-height: 1.3;
+}
+
+.day-total .income {
+  color: #1e88e5;
+  font-weight: bold;
+}
+
+.day-total .expense {
+  color: #e53935;
+  font-weight: bold;
+}
+
+.tooltip-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.tooltip-box {
+  position: absolute;
+  top: -6px; /* 위로 살짝 */
+  left: 100%; /* 오른쪽 끝 기준 */
+  transform: translate(-100%, -50%); /* 왼쪽 위로 겹치게 */
+  background: #fffcc0;
+  border: 1px solid #e5d200;
+  border-radius: 6px;
+  padding: 6px 10px 30px 10px;
+  font-size: 12px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  min-width: 140px;
+  z-index: 99999;
+}
+.tooltip-line {
+  margin-bottom: 4px;
+}
+
+.tooltip-honey {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+  z-index: 99999999999 !important;
+}
+
+::v-deep(.vc-pane-container),
+::v-deep(.vc-day-content) {
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 10;
+}
+
+::v-deep(.vc-pane) {
+  background-color: #fffbe6;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* 그림자 좀 더 진하게 */
+  border: none !important; /* 혹시 남아있을 border 확실히 제거 */
+}
+
+.fixed_bear {
+  margin-left: 75%;
+  margin-top: 50px;
+}
+::v-deep(.vc-header .vc-title) {
+  color: var(--vc-header-title-color);
+  font-weight: var(--vc-font-semibold);
+  white-space: nowrap;
+  padding: 0 8px;
+  margin: 0;
+  line-height: 30px;
+  background-color: #fffbe6;
+}
+.vc-pane-container {
+  background-color: blue !important;
+}
+::v-deep(.vc-base-icon) {
+  display: inline-block;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  background-color: #fffbe6;
+  border-color: #ffc800;
 }
 </style>
