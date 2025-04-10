@@ -196,10 +196,10 @@
       "budgetId": "3",
       "date": "2025-03-29",
       "type": "expense",
-      "money": "3453",
+      "money": 6453,
       "category": "이체",
       "memo": "이체 관련 거래입니다.",
-      "emotion": "의무감",
+      "emotion": "스트레스",
       "id": "5f2c"
     },
     {
@@ -207,7 +207,7 @@
       "budgetId": "4",
       "date": "2025-03-19",
       "type": "income",
-      "money": "81715",
+      "money": "81716",
       "category": "급여",
       "memo": "급여 관련 거래입니다.",
       "emotion": "스트레스",
@@ -626,7 +626,7 @@
       "date": "2025-03-30",
       "type": "income",
       "money": 50585,
-      "category": "급여",
+      "category": "용돈",
       "memo": "급여 관련 거래입니다.",
       "emotion": "행복",
       "id": "e8e4"
@@ -762,17 +762,6 @@
       "memo": "급여 관련 거래입니다.",
       "emotion": "의무감",
       "id": "297a"
-    },
-    {
-      "userId": "1",
-      "budgetId": "58",
-      "date": "2025-03-24",
-      "type": "income",
-      "money": "29205",
-      "category": "급여",
-      "memo": "급여 관련 거래입니다.",
-      "emotion": "행복",
-      "id": "b33e"
     },
     {
       "userId": "1",

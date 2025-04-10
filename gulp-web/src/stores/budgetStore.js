@@ -1,26 +1,22 @@
-// stores/budgetStore.js
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import isoWeek from 'dayjs/plugin/isoWeek'; // 주 시작일 지정용 (월요일 시작이면 필요)
+import isoWeek from 'dayjs/plugin/isoWeek';
 
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
-export const useBudgetStore = defineStore('budget', () => {
-  // 내부 상태 변수 (직접 접근은 피함)
-  const _groupedBudget = ref({});
 
+export const useBudgetStore = defineStore('budget', () => {
+  const _groupedBudget = ref({});
   const _allBudget = ref([]);
 
-  // 읽기 전용 computed 속성으로 외부에 노출
   const groupedBudget = computed(() => _groupedBudget.value);
 
-  // 날짜별로 그룹화
   async function fetchBudgetByDate() {
     const res = await axios.get('http://localhost:3000/budget');
-    _allBudget.value = res.data; // 원본 저장
+    _allBudget.value = res.data;
 
     _groupedBudget.value = res.data.reduce((acc, cur) => {
       const date = cur.date;
@@ -30,12 +26,10 @@ export const useBudgetStore = defineStore('budget', () => {
     }, {});
   }
 
-  // 카테고리별 필터링
   function getBudgetByCategory(categoryName) {
     return _allBudget.value.filter((item) => item.category === categoryName);
   }
 
-  // 감정별 필터링
   function getBudgetByEmotion(emotionName) {
     return _allBudget.value.filter((item) => item.emotion === emotionName);
   }
@@ -52,12 +46,10 @@ export const useBudgetStore = defineStore('budget', () => {
           key = date.format('YYYY-MM-DD');
           break;
         case '주간별': {
-          const startOfWeek = date.startOf('week'); // 일요일 기준 시작
-          const endOfWeek = date.endOf('week'); // 토요일 기준 끝
-
-          const startStr = startOfWeek.format('M월 D일'); // 예: 2월 18일
-          const endStr = endOfWeek.format('M월 D일'); // 예: 2월 24일
-
+          const startOfWeek = date.startOf('week');
+          const endOfWeek = date.endOf('week');
+          const startStr = startOfWeek.format('M월 D일');
+          const endStr = endOfWeek.format('M월 D일');
           key = `${startStr} ~ ${endStr}`;
           break;
         }
@@ -76,11 +68,35 @@ export const useBudgetStore = defineStore('budget', () => {
     return result;
   }
 
+  // ✅ 삭제 기능 추가
+  async function deleteBudget(id) {
+    try {
+      await axios.delete(`http://localhost:3000/budget/${id}`);
+      await fetchBudgetByDate(); // 상태 갱신
+    } catch (err) {
+      console.error('❌ Pinia 삭제 실패:', err);
+      throw err;
+    }
+  }
+
+  // ✅ 수정 기능 추가
+  async function updateBudget(id, updatedItem) {
+    try {
+      await axios.put(`http://localhost:3000/budget/${id}`, updatedItem);
+      await fetchBudgetByDate(); // 상태 갱신
+    } catch (err) {
+      console.error('❌ Pinia 수정 실패:', err);
+      throw err;
+    }
+  }
+
   return {
     groupedBudget,
     fetchBudgetByDate,
     getBudgetByCategory,
     getBudgetByEmotion,
     getGroupedBudgetByPeriod,
+    deleteBudget, // ✅ 추가됨
+    updateBudget, // ✅ 추가됨
   };
 });
