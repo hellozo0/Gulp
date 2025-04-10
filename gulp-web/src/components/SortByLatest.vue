@@ -1,9 +1,31 @@
+<script setup>
+import { onMounted, watch } from 'vue';
+import { useLatestStore } from '@/stores/latest';
+
+const props = defineProps({
+  selectedMonth: String,
+});
+
+const latestStore = useLatestStore();
+
+onMounted(() => {
+  latestStore.fetchLatestThree(props.selectedMonth);
+});
+
+watch(
+  () => props.selectedMonth,
+  (newMonth) => {
+    latestStore.fetchLatestThree(newMonth);
+  }
+);
+</script>
+
 <template>
   <div>
     <h2>내역 <br />최신순 조회</h2>
 
     <ul>
-      <li v-for="item in latestThree" :key="item.budgetId">
+      <li v-for="item in latestStore.latestThree" :key="item.budgetId">
         <h2>
           {{ item.type === 'income' ? '+' : '-' }}
           {{ Number(item.money).toLocaleString() }}원
@@ -15,30 +37,6 @@
     <h4><a href="http://localhost:5173/history">전체 내역 보기</a></h4>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted, watch } from 'vue';
-import axios from 'axios';
-
-const props = defineProps({
-  selectedMonth: String,
-});
-
-const latestThree = ref([]);
-
-const fetchBudget = async () => {
-  const res = await axios.get('http://localhost:3000/budget');
-
-  // 월별 필터링 후 최신순 정렬 → 상위 3개만
-  latestThree.value = res.data
-    .filter((item) => item.date.startsWith(props.selectedMonth))
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 3);
-};
-
-onMounted(fetchBudget);
-watch(() => props.selectedMonth, fetchBudget);
-</script>
 
 <style scoped>
 ul {

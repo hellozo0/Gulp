@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2 v-if="topCategories.length">
-      이번달은 {{ emotionTitle }} 소비가 많아요 !
+    <h2 v-if="emotionStore.topCategories.length">
+      이번달은 {{ emotionStore.emotionTitle }} 소비가 많아요 !
     </h2>
     <h2 v-else>이번달은 등록된 감정 소비가 없어요</h2>
     <div class="chart-section">
@@ -10,7 +10,7 @@
       </div>
       <br />
       <ul>
-        <li v-for="item in topCategories" :key="item.emotion">
+        <li v-for="item in emotionStore.topCategories" :key="item.emotion">
           <div class="expense">
             <img :src="getImageUrl(item.emotion)" alt="icon" class="icon" />
             &nbsp;&nbsp;
@@ -21,11 +21,19 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import axios from 'axios';
+import { useEmotionStore } from '@/stores/emotion'; // 경로는 프로젝트 구조에 맞게
 import Chart from 'chart.js/auto';
+
+const props = defineProps({
+  selectedMonth: String,
+});
+
+const emotionStore = useEmotionStore();
+const doughnut = ref(null);
+let chartInstance = null;
+
 const categoryImages = {
   행복: 'happy.png',
   설렘: 'excited.png',
@@ -35,23 +43,16 @@ const categoryImages = {
   '모름(기타)': 'question.png',
 };
 
-// 이미지 경로 반환
 const getImageUrl = (category) => {
   const filename = categoryImages[category] || 'default.png';
   return new URL(`/src/assets/images/${filename}`, import.meta.url).href;
 };
 
-const props = defineProps({
-  selectedMonth: String,
-});
-
-const doughnut = ref(null);
-const topCategories = ref([]);
-const emotionTitle = ref('');
-let chartInstance = null;
-
-const renderChart = (labels, data) => {
+const renderChart = () => {
   if (chartInstance) chartInstance.destroy();
+
+  const labels = emotionStore.topCategories.map((item) => item.emotion);
+  const data = emotionStore.topCategories.map((item) => item.total);
 
   chartInstance = new Chart(doughnut.value, {
     type: 'doughnut',
@@ -69,9 +70,7 @@ const renderChart = (labels, data) => {
             '#706D54',
             '#C9B194',
           ],
-          // borderColor: '#fffce6', // 원하는 테두리 색
-          // borderWidth: 4, // 테두리 두께
-          circumference: 180, // 도넛 반 자르기
+          circumference: 180,
           rotation: 270,
         },
       ],
@@ -96,44 +95,14 @@ const renderChart = (labels, data) => {
   });
 };
 
-const fetchData = async () => {
-  const res = await axios.get('http://localhost:3000/budget');
-  const expenses = res.data.filter(
-    (item) => item.emotion && item.date.startsWith(props.selectedMonth)
-  );
-
-  const emotionMap = {};
-  expenses.forEach((item) => {
-    const emotion = item.emotion;
-    const money = Number(item.money);
-    emotionMap[emotion] = (emotionMap[emotion] || 0) + money;
-  });
-
-  const sorted = Object.entries(emotionMap)
-    .map(([emotion, total]) => ({ emotion, total }))
-    .sort((a, b) => b.total - a.total);
-
-  const totalAmount = sorted.reduce((sum, item) => sum + item.total, 0);
-
-  // 퍼센트 계산
-  const withPercent = sorted.map((item) => ({
-    ...item,
-    percent: ((item.total / totalAmount) * 100).toFixed(1),
-  }));
-
-  topCategories.value = withPercent;
-  emotionTitle.value = sorted.length > 0 ? sorted[0].emotion : '감정';
-
-  const labels = withPercent.map((item) => item.emotion);
-  const data = withPercent.map((item) => item.total);
-
-  renderChart(labels, data);
+const updateChart = async () => {
+  await emotionStore.fetchEmotionData(props.selectedMonth);
+  renderChart();
 };
 
-onMounted(fetchData);
-watch(() => props.selectedMonth, fetchData);
+onMounted(updateChart);
+watch(() => props.selectedMonth, updateChart);
 </script>
-
 <style scoped>
 h3 {
   font-weight: bold;

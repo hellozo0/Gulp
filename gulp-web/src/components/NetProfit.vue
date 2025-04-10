@@ -1,6 +1,5 @@
 <template>
   <div class="result">
-    <!-- <h3>{{ props.selectedMonth }}</h3> -->
     <h2>이번달은 얼마 남았을까요</h2>
     <br />
     <div class="between">
@@ -18,39 +17,26 @@
   </div>
 </template>
 <script setup>
-import { computed, toRefs, onMounted, ref } from 'vue';
-import axios from 'axios';
+import { onMounted, computed } from 'vue';
+import { useNetProfitStore } from '@/stores/netprofit';
 
 const props = defineProps({
   selectedMonth: String,
 });
 
-const budgetData = ref([]);
+const netProfitStore = useNetProfitStore();
 
-onMounted(async () => {
-  const res = await axios.get('http://localhost:3000/budget');
-  budgetData.value = res.data;
-});
-
-const filteredBudget = computed(() => {
-  return budgetData.value.filter((item) =>
-    item.date.startsWith(props.selectedMonth)
-  );
+onMounted(() => {
+  netProfitStore.fetchBudgetData();
 });
 
 const totalIncome = computed(() =>
-  filteredBudget.value
-    .filter((item) => item.type === 'income')
-    .reduce((sum, item) => sum + Number(item.money), 0)
+  netProfitStore.totalIncome(props.selectedMonth)
 );
-
 const totalExpense = computed(() =>
-  filteredBudget.value
-    .filter((item) => item.type === 'expense')
-    .reduce((sum, item) => sum + Number(item.money), 0)
+  netProfitStore.totalExpense(props.selectedMonth)
 );
-
-const netIncome = computed(() => totalIncome.value - totalExpense.value);
+const netIncome = computed(() => netProfitStore.netIncome(props.selectedMonth));
 </script>
 <style scoped>
 h2 {
