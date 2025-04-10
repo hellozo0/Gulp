@@ -102,12 +102,6 @@ const renderChart = (labels, data) => {
         },
         y: {
           grid: { display: false },
-          ticks: {
-            stepSize: 50000,
-            callback: function (value) {
-              return value % 50000 === 0 ? value.toLocaleString() + '원' : '';
-            },
-          },
         },
       },
     },
