@@ -6,7 +6,7 @@
   </div>
   <br />
   <ul>
-    <li v-for="item in topCategories" :key="item.category">
+    <li v-for="item in budgetStore.topCategories" :key="item.category">
       <div class="expense">
         <img :src="getImageUrl(item.category)" alt="icon" class="icon" />
         <span>{{ item.category }}</span>
@@ -18,8 +18,15 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import axios from 'axios';
+import { useBudgetStore } from '@/stores/budget';
 import Chart from 'chart.js/auto';
+
+const props = defineProps({
+  selectedMonth: String,
+});
+
+const barChart = ref(null);
+let chartInstance = null;
 
 const categoryImages = {
   대출: 'loan.png',
@@ -39,27 +46,18 @@ const categoryImages = {
   그외: 'etc.png',
 };
 
-// 이미지 경로 반환
 const getImageUrl = (category) => {
   const filename = categoryImages[category] || 'default.png';
   return new URL(`/src/assets/icons/${filename}`, import.meta.url).href;
 };
 
-const props = defineProps({
-  selectedMonth: String,
-});
-
-const barChart = ref(null);
-const topCategories = ref([]);
-const otherTotal = ref(0);
-let chartInstance = null;
+const budgetStore = useBudgetStore();
 
 const renderChart = (labels, data) => {
   if (chartInstance) {
     chartInstance.destroy();
   }
 
-  // chart.js
   chartInstance = new Chart(barChart.value, {
     type: 'bar',
     data: {
@@ -81,16 +79,12 @@ const renderChart = (labels, data) => {
           categoryPercentage: 0.8,
         },
       ],
-      borderColor: '#fffce6', // 원하는 테두리 색
-      borderWidth: 4,
     },
     options: {
       indexAxis: 'y',
       responsive: true,
       plugins: {
-        legend: {
-          display: false,
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
             label: (context) =>
@@ -100,17 +94,19 @@ const renderChart = (labels, data) => {
       },
       scales: {
         x: {
-          grid: {
-            display: false,
-          },
+          grid: { display: false },
           ticks: {
             stepSize: 50000,
             callback: (value) => `${value.toLocaleString()}`,
           },
         },
         y: {
-          grid: {
-            display: false,
+          grid: { display: false },
+          ticks: {
+            stepSize: 50000,
+            callback: function (value) {
+              return value % 50000 === 0 ? value.toLocaleString() + '원' : '';
+            },
           },
         },
       },
@@ -118,44 +114,16 @@ const renderChart = (labels, data) => {
   });
 };
 
-const fetchData = async () => {
-  const res = await axios.get('http://localhost:3000/budget');
-  const expenses = res.data.filter(
-    (item) =>
-      item.type === 'expense' && item.date.startsWith(props.selectedMonth)
-  );
-
-  const categoryMap = {};
-  expenses.forEach((item) => {
-    const category = item.category;
-    const money = Number(item.money);
-    categoryMap[category] = (categoryMap[category] || 0) + money;
-  });
-
-  const sorted = Object.entries(categoryMap)
-    .map(([category, total]) => ({ category, total }))
-    .sort((a, b) => b.total - a.total);
-
-  const top4 = sorted.slice(0, 4);
-  const other = sorted.slice(4).reduce((sum, item) => sum + item.total, 0);
-
-  topCategories.value = [...top4];
-  otherTotal.value = other;
-
-  if (other > 0) {
-    topCategories.value.push({ category: '그외', total: other });
-  }
-
-  const labels = topCategories.value.map((item) => item.category);
-  const data = topCategories.value.map((item) => item.total);
-
+const updateChart = async () => {
+  await budgetStore.fetchTopExpenses(props.selectedMonth);
+  const labels = budgetStore.topCategories.map((item) => item.category);
+  const data = budgetStore.topCategories.map((item) => item.total);
   renderChart(labels, data);
 };
 
-onMounted(fetchData);
-watch(() => props.selectedMonth, fetchData);
+onMounted(updateChart);
+watch(() => props.selectedMonth, updateChart);
 </script>
-
 <style scoped>
 h2 {
   font-weight: bold;
