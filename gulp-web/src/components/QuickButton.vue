@@ -30,8 +30,8 @@ const handleClick = () => {
 }
 
 .quick-button img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
 }
 
 .quick-button:hover {

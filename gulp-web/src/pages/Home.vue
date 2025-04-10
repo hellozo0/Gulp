@@ -192,8 +192,8 @@ select:hover {
 
 .create-container {
   position: fixed;
-  bottom: 50px;
-  right: 100px;
+  bottom: 200px;
+  right: 250px;
   z-index: 1000;
 }
 </style>

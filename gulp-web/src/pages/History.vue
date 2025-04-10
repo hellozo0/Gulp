@@ -227,6 +227,13 @@
           </li>
         </ul>
       </div>
+      <div class="create-container">
+        <QuickButton @togglePopup="toggleQuickCreate" />
+        <QuickCreate
+          :showQuickCreate="showQuickCreate"
+          @togglePopup="toggleQuickCreate"
+        />
+      </div>
     </div>
   </main>
   <TransactionModal
@@ -247,11 +254,19 @@ import stress from '@/assets/images/stress.png';
 import duty from '@/assets/images/duty.png';
 import regret from '@/assets/images/regret.png';
 import what from '@/assets/images/question.png';
+import QuickButton from '@/components/QuickButton.vue';
+import QuickCreate from '@/components/QuickCreate.vue';
 import { useBudgetStore } from '@/stores/budgetStore.js';
 import { computed } from 'vue';
 import TransactionModal from '@/components/TransactionModal.vue';
 
 const selectedItem = ref(null);
+
+//퀵 팝업
+const showQuickCreate = ref(false);
+const toggleQuickCreate = () => {
+  showQuickCreate.value = !showQuickCreate.value;
+};
 
 const budgetStore = useBudgetStore();
 const isOpen = ref(false);
@@ -889,5 +904,12 @@ const editItem = (item) => {
   fill: none;
   background-color: #fffbe6;
   border-color: #ffc800;
+}
+
+.create-container {
+  position: fixed;
+  bottom: 200px;
+  right: 250px;
+  z-index: 1000;
 }
 </style>
