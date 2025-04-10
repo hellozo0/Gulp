@@ -2,7 +2,9 @@
   <div class="navbar">
     <div class="inner">
       <!-- 로고 -->
-      <img src="../assets/images/logo_header.png" class="logo" alt="꿀깍" />
+      <router-link to="/onboarding">
+        <img src="../assets/images/logo_header.png" class="logo" alt="꿀깍" />
+      </router-link>
 
       <!-- 메뉴 -->
       <div class="menu">
