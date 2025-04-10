@@ -59,17 +59,21 @@ const logout = () => {
   display: flex;
   align-items: center;
   gap: 40px;
-  max-width: 800px;
+  max-width: 1000px;
+}
+
+.mypage-container img {
+  width: 300px;
 }
 
 .character {
-  width: 160px;
+  width: 200px;
   height: auto;
 }
 
 .nickname {
   font-weight: bold;
-  font-size: 35px;
+  font-size: 50px;
   color: #222;
 }
 
@@ -77,8 +81,8 @@ const logout = () => {
   background-color: #fae55f;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 30px;
+  font-weight: normal;
   padding: 16px 200px;
   margin-top: 1rem;
   cursor: pointer;
@@ -94,6 +98,7 @@ const logout = () => {
   margin-top: 10px;
   text-decoration: none;
   color: #707070;
+  font-size: 26px;
 }
 
 .logout-btn:hover {

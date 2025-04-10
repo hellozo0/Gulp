@@ -8,11 +8,20 @@
 
       <!-- 메뉴 -->
       <div class="menu">
-        <RouterLink to="/" :class="linkClass('/')">소비 통계</RouterLink>
-        <RouterLink to="/history" :class="linkClass('/history')"
-          >전체 내역</RouterLink
-        >
-        <RouterLink to="/loan" :class="linkClass('/loan')">대출현황</RouterLink>
+        <template v-if="isLoggedIn">
+          <RouterLink to="/" :class="linkClass('/')">소비 통계</RouterLink>
+          <RouterLink to="/history" :class="linkClass('/history')"
+            >전체 내역</RouterLink
+          >
+          <RouterLink to="/loan" :class="linkClass('/loan')"
+            >대출현황</RouterLink
+          >
+        </template>
+        <template v-else>
+          <span class="menu disabled">소비 통계</span>
+          <span class="menu disabled">전체 내역</span>
+          <span class="menu disabled">대출현황</span>
+        </template>
       </div>
 
       <!-- 버튼 영역 -->
