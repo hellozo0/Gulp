@@ -15,7 +15,7 @@ const router = createRouter({
     //📌 페이지 추가될때 마다 이곳에 라우터연결 해주세요!
     //📌 export default를 통해 pages/components들의 컴포넌트명 지정해주는거 잊지 말아주세요!
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home,
     },
@@ -30,7 +30,7 @@ const router = createRouter({
       component: Loan,
     },
     {
-      path: '/onboarding',
+      path: '/',
       name: 'onBoarding',
       component: OnBoarding,
     },
@@ -60,6 +60,9 @@ const router = createRouter({
       component: MyPageEdit,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }; // 항상 맨 위로 스크롤
+  },
 });
 
 export default router;
