@@ -8,7 +8,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 
-export const useBudgetStore = defineStore('budget', () => {
+export const useBudgetStore = defineStore('budgetStore', () => {
   const _groupedBudget = ref({});
   const _allBudget = ref([]);
 
