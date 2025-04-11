@@ -58,7 +58,7 @@ const login = async () => {
     localStorage.setItem('user', JSON.stringify(user));
     userStore.login(user);
 
-    router.push('/'); // 홈으로 이동
+    router.push('/home'); // 홈으로 이동
   } else {
     alert('아이디 또는 비밀번호가 틀렸습니다.');
   }

@@ -247,7 +247,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
 import happy from '@/assets/images/happy.png';
 import excited from '@/assets/images/excited.png';
 import stress from '@/assets/images/stress.png';
@@ -267,7 +269,7 @@ const showQuickCreate = ref(false);
 const toggleQuickCreate = () => {
   showQuickCreate.value = !showQuickCreate.value;
 };
-
+const route = useRoute();
 const budgetStore = useBudgetStore();
 const isOpen = ref(false);
 const selectedPeriod = ref('일별');
@@ -316,6 +318,13 @@ const toggleSelectedDate = () => {
 onMounted(() => {
   budgetStore.fetchBudgetByDate(); // 데이터 로드
 });
+
+watch(
+  () => route.fullPath,
+  () => {
+    budgetStore.fetchBudgetByDate();
+  }
+);
 const hoveredDate = ref('');
 
 function getItemsForDate(date) {

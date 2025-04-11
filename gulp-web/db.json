@@ -1260,17 +1260,6 @@
     },
     {
       "userId": "1",
-      "budgetId": "118",
-      "date": "2025-04-11",
-      "type": "income",
-      "money": "69900",
-      "category": "급여",
-      "memo": "급여 관련 거래입니다.",
-      "emotion": "행복",
-      "id": "a118"
-    },
-    {
-      "userId": "1",
       "budgetId": "119",
       "date": "2025-04-11",
       "type": "income",
@@ -1290,6 +1279,17 @@
       "memo": "대출 관련 거래입니다.",
       "emotion": "행복",
       "id": "a120"
+    },
+    {
+      "id": "5zsi5i",
+      "userId": "1",
+      "budgetId": "kk97pl",
+      "date": "2025-04-09",
+      "type": "income",
+      "money": "123456",
+      "category": "용돈",
+      "memo": "용돈을 받았어요",
+      "emotion": "행복"
     }
   ]
 }

@@ -2,13 +2,20 @@
   <div class="navbar">
     <div class="inner">
       <!-- 로고 -->
-      <router-link to="/onboarding">
+      <router-link to="/">
         <img src="../assets/images/logo_header.png" class="logo" alt="꿀깍" />
       </router-link>
 
       <!-- 메뉴 -->
       <div class="menu">
-        <template v-if="isLoggedIn">
+        <a @click="handleNav('/statistic')" :class="linkClass('/statistic')"
+          >소비 통계</a
+        >
+        <a @click="handleNav('/history')" :class="linkClass('/history')"
+          >전체 내역</a
+        >
+        <a @click="handleNav('/loan')" :class="linkClass('/loan')">대출현황</a>
+        <!-- <template v-if="isLoggedIn">
           <RouterLink to="/" :class="linkClass('/')">소비 통계</RouterLink>
           <RouterLink to="/history" :class="linkClass('/history')"
             >전체 내역</RouterLink
@@ -18,10 +25,16 @@
           >
         </template>
         <template v-else>
-          <span class="menu disabled">소비 통계</span>
-          <span class="menu disabled">전체 내역</span>
-          <span class="menu disabled">대출현황</span>
-        </template>
+          <RouterLink to="/landing" :class="linkClass('/landing')"
+            >소비 통계</RouterLink
+          >
+          <RouterLink to="/landing" :class="linkClass('/landing')"
+            >전체 내역</RouterLink
+          >
+          <RouterLink to="/landing" :class="linkClass('/landing')"
+            >대출현황</RouterLink
+          >
+        </template> -->
       </div>
 
       <!-- 버튼 영역 -->
@@ -48,11 +61,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
+const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 const { isLoggedIn, nickname, id } = storeToRefs(userStore);
@@ -60,6 +75,14 @@ const { isLoggedIn, nickname, id } = storeToRefs(userStore);
 onMounted(() => {
   userStore.loadUser(); // 새로고침해도 상태 유지
 });
+
+function handleNav(path) {
+  if (isLoggedIn.value) {
+    router.push(path);
+  } else {
+    router.push('/landing');
+  }
+}
 
 const linkClass = (path) => {
   return route.path === path ? 'nav-link active' : 'nav-link';
