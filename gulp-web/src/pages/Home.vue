@@ -29,7 +29,7 @@
     <div class="byEmotion">
       <ByEmotion :selectedMonth="selectedMonth" />
     </div>
-
+    <!-- 퀵 생성 버튼 추가 -->
     <div class="create-container">
       <QuickButton @togglePopup="toggleQuickCreate" />
       <QuickCreate
@@ -59,12 +59,14 @@ const budgetData = ref([]);
 const availableMonths = ref([]);
 const selectedMonth = ref('');
 
-// 컴포넌트가 마운트 될 때 데이터 불러오기
+// 월 목록 가져오기
 onMounted(async () => {
   const res = await axios.get('http://localhost:3000/budget');
   budgetData.value = res.data;
+  // Date data에서 yyyy-MM만 추출 + set : 중복 제거
   const months = [...new Set(res.data.map((item) => item.date.slice(0, 7)))];
   availableMonths.value = months.sort((a, b) => new Date(b) - new Date(a));
+  // selectedMonth : 가장 최신 월로 설정
   selectedMonth.value = availableMonths.value[0];
 });
 </script>
