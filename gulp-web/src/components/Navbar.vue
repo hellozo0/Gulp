@@ -8,9 +8,7 @@
 
       <!-- 메뉴 -->
       <div class="menu">
-        <a @click="handleNav('/statistic')" :class="linkClass('/statistic')"
-          >소비 통계</a
-        >
+        <a @click="handleNav('/home')" :class="linkClass('/home')">소비 통계</a>
         <a @click="handleNav('/history')" :class="linkClass('/history')"
           >전체 내역</a
         >
