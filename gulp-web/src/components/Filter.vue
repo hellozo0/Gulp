@@ -15,88 +15,105 @@
         </label>
       </div>
 
-      <!-- 🔽 상단 필터 버튼들 -->
-      <div class="filter-top-row">
+      <div class="top-bar">
         <div class="dropdown-trigger" @click="toggleDropdown">
           전체 <span class="arrow" :class="{ open: isOpen }">▼</span>
         </div>
-        <button class="sort-toggle" @click="toggleSortOrder">
-          {{ isAsc ? '↑ 오름차순' : '↓ 내림차순' }}
-        </button>
-        <button class="reset-button" @click="resetFilters">초기화</button>
-        <button class="today-button" @click="goToToday">
-          오늘로 이동 <i class="fa-solid fa-rotate-left icon-rotate"></i>
-        </button>
-      </div>
 
-      <!-- 🔽 필터 선택 영역 -->
-      <div v-if="isOpen" class="my-dropdown-menu">
-        <ul class="select-list">
-          <li>
-            날짜를 선택해
-            <span class="chevron">
-              <select class="pretty-select" v-model="selectedPeriod">
-                <option>일별</option>
-                <option>주간별</option>
-                <option>월별</option>
-                <option>년도별</option>
-              </select>
-            </span>
-          </li>
-          <li>
-            카테고리를 골라줘
-            <span class="chevron">
-              <select class="pretty-select" v-model="selectedCategory">
-                <option>전체</option>
-                <optgroup label="수입">
-                  <option>급여</option>
-                  <option>용돈</option>
-                  <option>그외</option>
-                </optgroup>
-                <optgroup label="지출">
-                  <option>대출</option>
-                  <option>식비</option>
-                  <option>유흥</option>
-                  <option>쇼핑</option>
-                  <option>취미</option>
-                  <option>의료</option>
-                  <option>주거</option>
-                  <option>보험</option>
-                  <option>미용</option>
-                  <option>교통</option>
-                  <option>생활</option>
-                  <option>교육</option>
-                  <option>이체</option>
-                  <option>저축</option>
-                </optgroup>
-              </select>
-            </span>
-          </li>
-          <li>
-            유형을 선택해
-            <span class="chevron">
-              <select class="pretty-select" v-model="selectedType">
-                <option>모두</option>
-                <option>수입만</option>
-                <option>지출만</option>
-              </select>
-            </span>
-          </li>
-          <li>
-            감정을 선택해
-            <span class="chevron">
-              <select class="pretty-select" v-model="selectedEmotion">
-                <option>전체</option>
-                <option>행복</option>
-                <option>설렘</option>
-                <option>스트레스</option>
-                <option>의무감</option>
-                <option>후회</option>
-                <option>모름(기타)</option>
-              </select>
-            </span>
-          </li>
-        </ul>
+        <div class="mobile-menu">
+          <button class="hamburger" @click="isMenuOpen = !isMenuOpen">☰</button>
+
+          <div v-if="isMenuOpen" class="mobile-dropdown">
+            <button class="dropdown-btn" @click="toggleSortOrder">
+              {{ isAsc ? '↑ 오름차순' : '↓ 내림차순' }}
+            </button>
+            <button class="dropdown-btn" @click="resetFilters">초기화</button>
+            <button class="dropdown-btn" @click="goToToday">
+              오늘로 이동 <i class="fa-solid fa-rotate-left icon-rotate"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 🔽 상단 필터 버튼들 -->
+        <div class="filter-top-row">
+          <button class="sort-toggle" @click="toggleSortOrder">
+            {{ isAsc ? '↑ 오름차순' : '↓ 내림차순' }}
+          </button>
+          <button class="reset-button" @click="resetFilters">초기화</button>
+          <button class="today-button" @click="goToToday">
+            오늘로 이동 <i class="fa-solid fa-rotate-left icon-rotate"></i>
+          </button>
+        </div>
+
+        <!-- 🔽 필터 선택 영역 -->
+        <div v-if="isOpen" class="my-dropdown-menu">
+          <ul class="select-list">
+            <li>
+              날짜를 선택해
+              <span class="chevron">
+                <select class="pretty-select" v-model="selectedPeriod">
+                  <option>일별</option>
+                  <option>주간별</option>
+                  <option>월별</option>
+                  <option>년도별</option>
+                </select>
+              </span>
+            </li>
+            <li>
+              카테고리를 골라줘
+              <span class="chevron">
+                <select class="pretty-select" v-model="selectedCategory">
+                  <option>전체</option>
+                  <optgroup label="수입">
+                    <option>급여</option>
+                    <option>용돈</option>
+                    <option>그외</option>
+                  </optgroup>
+                  <optgroup label="지출">
+                    <option>대출</option>
+                    <option>식비</option>
+                    <option>유흥</option>
+                    <option>쇼핑</option>
+                    <option>취미</option>
+                    <option>의료</option>
+                    <option>주거</option>
+                    <option>보험</option>
+                    <option>미용</option>
+                    <option>교통</option>
+                    <option>생활</option>
+                    <option>교육</option>
+                    <option>이체</option>
+                    <option>저축</option>
+                  </optgroup>
+                </select>
+              </span>
+            </li>
+            <li>
+              유형을 선택해
+              <span class="chevron">
+                <select class="pretty-select" v-model="selectedType">
+                  <option>모두</option>
+                  <option>수입만</option>
+                  <option>지출만</option>
+                </select>
+              </span>
+            </li>
+            <li>
+              감정을 선택해
+              <span class="chevron">
+                <select class="pretty-select" v-model="selectedEmotion">
+                  <option>전체</option>
+                  <option>행복</option>
+                  <option>설렘</option>
+                  <option>스트레스</option>
+                  <option>의무감</option>
+                  <option>후회</option>
+                  <option>모름(기타)</option>
+                </select>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- ✅ 예산 리스트 출력 -->
@@ -212,6 +229,7 @@ const goToToday = () => {
   selectedDate.value = today;
   currentMonth.value = new Date();
   calendarKey.value++;
+  isDateSelected.value = true;
 };
 
 const categoryOrder = [
@@ -233,7 +251,7 @@ const categoryOrder = [
   '이체',
   '저축',
 ];
-
+const isMenuOpen = ref(false);
 const groupedBudgetByPeriod = computed(() => {
   const raw = budgetStore.getGroupedBudgetByPeriod(selectedPeriod.value);
   const parseKey = (label) => {
@@ -352,6 +370,7 @@ function getEmotionImage(emotion) {
 }
 
 .dropdown-trigger {
+  position: relative;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
@@ -377,7 +396,7 @@ function getEmotionImage(emotion) {
 
 .my-dropdown-menu {
   position: absolute;
-  top: 35px;
+  top: 100%;
   left: 0;
   background: #fffce8;
   border: 2px solid #e2e2e2;
@@ -418,8 +437,10 @@ function getEmotionImage(emotion) {
   transition: background-color 0.2s, transform 0.1s;
 }
 
-.today-button:hover {
-  background-color: #e7fbe7;
+@media (hover: hover) {
+  .today-button:hover {
+    background-color: #e7fbe7;
+  }
 }
 
 .today-button:active {
@@ -502,6 +523,7 @@ function getEmotionImage(emotion) {
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .sort-toggle {
@@ -545,8 +567,10 @@ function getEmotionImage(emotion) {
   transition: background-color 0.2s, transform 0.1s;
 }
 
-.reset-button:hover {
-  background-color: #ffecec;
+@media (hover: hover) {
+  .reset-button:hover {
+    background-color: #ffecec;
+  }
 }
 
 .reset-button:active {
@@ -558,5 +582,188 @@ function getEmotionImage(emotion) {
   bottom: 50px;
   right: 100px;
   z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  #filterPart {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .filter-top-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .my-dropdown-menu {
+    position: relative;
+    width: 100%;
+    clip-path: none;
+    border-radius: 12px;
+    padding: 16px;
+    top: 0;
+    left: 0;
+    box-shadow: none;
+  }
+
+  .select-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .pretty-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .dropdown-container {
+    overflow-x: hidden;
+  }
+
+  .create-container {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .filter-top-row {
+    flex-direction: column;
+    align-items: flex-start; /* ✅ 왼쪽 정렬 */
+    gap: 10px;
+  }
+
+  .filter-top-row > * {
+    width: 100%;
+    max-width: 220px; /* ✅ 버튼 너비 고정 */
+  }
+
+  .dropdown-trigger,
+  .sort-toggle,
+  .reset-button,
+  .today-button {
+    justify-content: flex-start; /* ✅ 내부 텍스트도 왼쪽 */
+    padding-left: 12px;
+    text-align: left;
+  }
+}
+
+/* 🔒 햄버거 메뉴 기본 숨김 */
+.mobile-menu {
+  display: none;
+}
+
+/* 같은 줄에 정렬 */
+.top-bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 📱 모바일 뷰에서 햄버거 노출 */
+@media (max-width: 500px) {
+  .mobile-menu {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  .hamburger {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-dropdown {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dropdown-btn {
+    font-size: 15px;
+    padding: 6px 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08);
+    text-align: left;
+  }
+
+  .dropdown-btn:hover {
+    background-color: #f9f9f9;
+  }
+
+  /* 기존 필터 버튼 숨김 */
+  .filter-top-row {
+    display: none;
+  }
+
+  .my-dropdown-menu {
+    position: absolute; /* ✅ absolute 유지 */
+    top: 100%; /* ✅ 버튼 아래에 위치 */
+    left: 0;
+    margin-top: 8px;
+    width: 90vw;
+    max-width: 360px;
+    padding: 16px;
+    clip-path: none;
+    border-radius: 12px;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+
+  .pretty-select {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.mobile-menu {
+  position: relative; /* 기준점 설정 */
+}
+
+.mobile-dropdown {
+  position: absolute;
+  top: 100%; /* 햄버거 버튼 바로 아래 */
+  right: 0; /* 오른쪽 정렬 */
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 오른쪽 정렬 */
+  gap: 8px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  background-color: #fffce8;
+}
+
+.dropdown-btn {
+  white-space: nowrap;
+  font-size: 15px;
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-btn:hover {
+  background-color: #f9f9f9;
 }
 </style>
