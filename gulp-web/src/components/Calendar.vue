@@ -5,7 +5,6 @@
       <img
         src="@/assets/images/2025honey.png"
         alt="2025bear"
-        width="300px"
         class="honey-on-calendar"
       />
       <v-calendar
@@ -15,13 +14,13 @@
         :from-page="currentMonth"
         show-day-popover="false"
         @update:pages="onPageUpdate"
-        style="width: 1000px; margin: 0 auto"
+        :style="calendarStyle"
       >
         <template #day-content="{ day }">
           <div
             class="calendar-cell"
             :class="{
-              selected: formatDate(day.date) === selectedDate.value,
+              selected: formatDate(day.date) === selectedDate,
               today: formatDate(day.date) === today.value,
             }"
             @click="onCellClick(day.date)"
@@ -78,9 +77,24 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, computed, onMounted } from 'vue';
 import { useBudgetStore } from '@/stores/budgetStore';
+const windowWidth = ref(window.innerWidth);
 
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth;
+  });
+});
+
+const calendarStyle = computed(() => {
+  return {
+    width: '90vw', // 전체 화면의 90%
+    maxWidth: '950px', // 최대 너비 제한
+    minWidth: '320px', // 너무 작지 않도록
+    margin: '0 auto',
+  };
+});
 // provide로 공유된 상태 불러오기
 const selectedDate = inject('selectedDate');
 const currentMonth = inject('currentMonth');
@@ -116,8 +130,8 @@ function getSumForDate(date) {
 .calendar-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 24px;
+  align-items: center;
+  padding: 48px 24px 24px;
   gap: 12px;
   justify-content: center;
   width: 100%;
@@ -125,18 +139,21 @@ function getSumForDate(date) {
 
 .calendar-inner {
   position: relative;
-  width: 1000px;
   margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .honey-on-calendar {
   position: absolute;
-  top: -88px;
-  right: -70px;
-  width: 160px;
-  max-width: 18%;
+  top: 10px;
+  right: 0;
+  transform: translate(30%, -60%);
+  width: 18%;
+  max-width: 120px;
+  min-width: 60px;
   height: auto;
-  z-index: 10;
+  z-index: 99999 !important;
   pointer-events: none;
 }
 
@@ -294,5 +311,76 @@ function getSumForDate(date) {
   fill: none;
   background-color: #fffbe6;
   border-color: #ffc800;
+}
+
+@media (max-width: 768px) {
+  .calendar-cell {
+    min-height: 80px;
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .day-number {
+    font-size: 13px;
+  }
+
+  .day-total {
+    font-size: 11px;
+  }
+}
+
+/* 모바일 뷰 */
+@media (max-width: 480px) {
+  .calendar-cell {
+    min-height: 70px;
+    padding: 4px;
+    font-size: 11px;
+  }
+
+  .day-number {
+    font-size: 12px;
+  }
+
+  .day-total {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+}
+
+/* 아주 작은 화면 */
+@media (max-width: 360px) {
+  .calendar-cell {
+    min-height: 60px;
+    padding: 2px;
+    font-size: 10px;
+  }
+
+  .day-number {
+    font-size: 11px;
+  }
+
+  .day-total {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 500px) {
+  .calendar-inner {
+    padding: 0; /* ✅ 양쪽 여백 제거 */
+    margin: 0 auto; /* ✅ 중앙 정렬 유지 */
+    display: flex; /* ✅ 중앙 정렬 보장 */
+    justify-content: center;
+  }
+
+  .v-calendar {
+    width: 100% !important;
+    max-width: 400px; /* 적절한 최대 너비 설정 */
+  }
+}
+
+@media (max-width: 768px) {
+  .tooltip-box {
+    display: none !important;
+  }
 }
 </style>
