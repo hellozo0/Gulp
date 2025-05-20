@@ -89,8 +89,9 @@ onMounted(() => {
 
 const calendarStyle = computed(() => {
   return {
+    top: '12px',
     width: '90vw', // 전체 화면의 90%
-    maxWidth: '950px', // 최대 너비 제한
+    maxWidth: '380px', // 최대 너비 제한
     minWidth: '320px', // 너무 작지 않도록
     margin: '0 auto',
   };
@@ -131,10 +132,11 @@ function getSumForDate(date) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px 24px 24px;
+  padding: 24px 0 0 0;
   gap: 12px;
   justify-content: center;
   width: 100%;
+  max-width: 380px;
 }
 
 .calendar-inner {
@@ -142,18 +144,20 @@ function getSumForDate(date) {
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  justify-content: center;
+  max-width: 380px;
 }
 
 .honey-on-calendar {
   position: absolute;
   top: 10px;
   right: 0;
-  transform: translate(30%, -60%);
+  transform: translate(18%, -30%);
   width: 18%;
   max-width: 120px;
   min-width: 60px;
   height: auto;
-  z-index: 99999 !important;
+  z-index: 99 !important;
   pointer-events: none;
 }
 

@@ -98,12 +98,13 @@ provide('goToToday', goToToday);
 <style scoped>
 .history-view-wrapper {
   width: 100%;
-  max-width: 1000px;
+  max-width: 400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
   padding-bottom: 120px; /* QuickCreate 여백 확보 */
-  overflow: visible;
+  overflow-x: hidden;
+  align-items: center;
 }
 </style>

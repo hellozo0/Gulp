@@ -34,17 +34,6 @@
           </div>
         </div>
 
-        <!-- 🔽 상단 필터 버튼들 -->
-        <div class="filter-top-row">
-          <button class="sort-toggle" @click="toggleSortOrder">
-            {{ isAsc ? '↑ 오름차순' : '↓ 내림차순' }}
-          </button>
-          <button class="reset-button" @click="resetFilters">초기화</button>
-          <button class="today-button" @click="goToToday">
-            오늘로 이동 <i class="fa-solid fa-rotate-left icon-rotate"></i>
-          </button>
-        </div>
-
         <!-- 🔽 필터 선택 영역 -->
         <div v-if="isOpen" class="my-dropdown-menu">
           <ul class="select-list">
@@ -314,7 +303,7 @@ function getEmotionImage(emotion) {
 
 <style scoped>
 #filterPart {
-  width: 1000px;
+  width: 390px;
   margin: 0 auto;
 }
 
@@ -376,6 +365,7 @@ function getEmotionImage(emotion) {
   cursor: pointer;
   display: flex;
   align-items: center;
+  line-height: 1;
 }
 
 .arrow {
@@ -486,9 +476,10 @@ function getEmotionImage(emotion) {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
   min-width: 130px;
 }
-
-.pretty-select:hover {
-  border-color: #aaa;
+@media (hover: hover) {
+  .pretty-select:hover {
+    border-color: #aaa;
+  }
 }
 
 .pretty-select:focus {
@@ -514,10 +505,11 @@ function getEmotionImage(emotion) {
   transition: background-color 0.2s;
 }
 
-.sort-toggle:hover {
-  background-color: #f0f0f0;
+@media (hover: hover) {
+  .sort-toggle:hover {
+    background-color: #f0f0f0;
+  }
 }
-
 .filter-top-row {
   display: flex;
   align-items: center;
@@ -537,10 +529,11 @@ function getEmotionImage(emotion) {
   transition: background-color 0.2s, transform 0.1s;
 }
 
-.sort-toggle:hover {
-  background-color: #fff7cc;
+@media (hover: hover) {
+  .sort-toggle:hover {
+    background-color: #fff7cc;
+  }
 }
-
 .sort-toggle:active {
   transform: scale(0.96);
 }
@@ -628,31 +621,24 @@ function getEmotionImage(emotion) {
   }
 }
 
-@media (max-width: 500px) {
-  .filter-top-row {
-    flex-direction: column;
-    align-items: flex-start; /* ✅ 왼쪽 정렬 */
-    gap: 10px;
-  }
-
-  .filter-top-row > * {
-    width: 100%;
-    max-width: 220px; /* ✅ 버튼 너비 고정 */
-  }
-
-  .dropdown-trigger,
-  .sort-toggle,
-  .reset-button,
-  .today-button {
-    justify-content: flex-start; /* ✅ 내부 텍스트도 왼쪽 */
-    padding-left: 12px;
-    text-align: left;
-  }
+.filter-top-row {
+  flex-direction: column;
+  align-items: flex-start; /* ✅ 왼쪽 정렬 */
+  gap: 10px;
 }
 
-/* 🔒 햄버거 메뉴 기본 숨김 */
-.mobile-menu {
-  display: none;
+.filter-top-row > * {
+  width: 100%;
+  max-width: 220px; /* ✅ 버튼 너비 고정 */
+}
+
+.dropdown-trigger,
+.sort-toggle,
+.reset-button,
+.today-button {
+  justify-content: flex-start; /* ✅ 내부 텍스트도 왼쪽 */
+  padding-left: 12px;
+  text-align: left;
 }
 
 /* 같은 줄에 정렬 */
@@ -662,8 +648,25 @@ function getEmotionImage(emotion) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  height: 48px;
 }
+.hamburger {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  height: 36px; /* ✅ 버튼 높이 고정 */
+  width: 36px; /* ✅ 너비도 고정해서 정사각형 모양 */
+  line-height: 1; /* ✅ 줄 간격 초기화 */
+}
 /* 📱 모바일 뷰에서 햄버거 노출 */
 @media (max-width: 500px) {
   .mobile-menu {
@@ -732,7 +735,11 @@ function getEmotionImage(emotion) {
 .mobile-menu {
   position: relative; /* 기준점 설정 */
 }
-
+.mobile-menu {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+}
 .mobile-dropdown {
   position: absolute;
   top: 100%; /* 햄버거 버튼 바로 아래 */
