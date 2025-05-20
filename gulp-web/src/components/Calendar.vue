@@ -23,6 +23,7 @@
               selected: formatDate(day.date) === selectedDate,
               today: formatDate(day.date) === today.value,
             }"
+            :data-date="formatDate(day.date)"
             @click="onCellClick(day.date)"
           >
             <div class="day-number">{{ day.day }}</div>
@@ -30,7 +31,7 @@
             <!-- 총 수입/지출 표시 -->
             <div
               class="day-total tooltip-wrapper"
-              @mouseover="hoveredDate = formatDate(day.date)"
+              @mouseover="handleHover(day.date)"
               @mouseleave="hoveredDate = ''"
             >
               <div v-if="getSumForDate(day.date).income" class="income">
@@ -45,6 +46,7 @@
             <div
               v-if="hoveredDate === formatDate(day.date)"
               class="tooltip-box"
+              :class="{ 'left-align': tooltipSideMap[formatDate(day.date)] }"
             >
               <div
                 v-for="(item, idx) in getItemsForDate(day.date).slice(0, 3)"
@@ -77,9 +79,10 @@
 </template>
 
 <script setup>
-import { inject, ref, computed, onMounted } from 'vue';
+import { inject, ref, computed, onMounted, nextTick } from 'vue';
 import { useBudgetStore } from '@/stores/budgetStore';
 const windowWidth = ref(window.innerWidth);
+const tooltipSideMap = ref({});
 
 onMounted(() => {
   window.addEventListener('resize', () => {
@@ -124,6 +127,33 @@ function getSumForDate(date) {
     else if (item.type === 'expense') result.expense += Number(item.money);
   }
   return result;
+}
+
+function isTooltipOverflowing(date) {
+  const cell = document.querySelector(`[data-date="${formatDate(date)}"]`);
+  if (!cell) return false;
+
+  const rect = cell.getBoundingClientRect();
+  const tooltipWidth = 160; // 예상 툴팁 너비(px)
+  const screenWidth = window.innerWidth;
+
+  return rect.right + tooltipWidth > screenWidth;
+}
+
+function handleHover(date) {
+  const key = formatDate(date);
+  hoveredDate.value = key;
+
+  nextTick(() => {
+    const cell = document.querySelector(`[data-date="${key}"]`);
+    if (!cell) return;
+
+    const rect = cell.getBoundingClientRect();
+    const tooltipWidth = 160; // 예상 너비
+    const screenWidth = window.innerWidth;
+
+    tooltipSideMap.value[key] = rect.right + tooltipWidth > screenWidth;
+  });
 }
 </script>
 
@@ -185,6 +215,8 @@ function getSumForDate(date) {
   overflow: visible;
   z-index: 1;
   background-color: #fffbe6;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .calendar-cell:hover {
@@ -231,11 +263,19 @@ function getSumForDate(date) {
   font-size: 12px;
   width: 100%;
   line-height: 1.3;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .day-total .income {
   color: #1e88e5;
   font-weight: bold;
+}
+
+.day-total div {
+  font-size: 11px;
+  overflow-wrap: break-word;
+  line-height: 1.2;
 }
 
 .day-total .expense {
@@ -246,6 +286,12 @@ function getSumForDate(date) {
 .tooltip-wrapper {
   position: relative;
   overflow: visible;
+}
+
+.tooltip-box.left-align {
+  left: auto;
+  right: 100%;
+  transform: translate(0%, -50%);
 }
 
 .tooltip-box {
@@ -317,22 +363,6 @@ function getSumForDate(date) {
   border-color: #ffc800;
 }
 
-@media (max-width: 768px) {
-  .calendar-cell {
-    min-height: 80px;
-    padding: 6px;
-    font-size: 12px;
-  }
-
-  .day-number {
-    font-size: 13px;
-  }
-
-  .day-total {
-    font-size: 11px;
-  }
-}
-
 /* 모바일 뷰 */
 @media (max-width: 480px) {
   .calendar-cell {
@@ -382,9 +412,62 @@ function getSumForDate(date) {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 50px) {
   .tooltip-box {
     display: none !important;
   }
+}
+
+@media (min-width: 769px) {
+  .calendar-cell {
+    min-height: 100px;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .day-number {
+    font-size: 16px;
+  }
+
+  .day-total {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .tooltip-box {
+    display: block !important;
+  }
+}
+
+.tooltip-box {
+  font-size: 11px; /* 전체 툴팁 글자 크기 축소 */
+  padding: 4px 8px 24px 8px; /* 여백도 조정 */
+  min-width: 120px; /* 조금 더 컴팩트하게 */
+}
+
+.tooltip-line {
+  margin-bottom: 2px;
+  font-size: 11px; /* 줄 내용도 작게 */
+}
+
+.tooltip-line span {
+  font-weight: normal;
+}
+
+.tooltip-honey {
+  width: 18px; /* 크기 축소 */
+  height: 18px;
+  top: 4px;
+  right: 4px;
+  opacity: 0.7;
+}
+
+.day-total .income,
+.day-total .expense {
+  font-size: 6px; /* 수입/지출 표시도 작게 */
+}
+.calendar-cell {
+  min-height: 100px;
+  height: auto;
 }
 </style>
