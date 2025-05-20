@@ -1,26 +1,29 @@
 <template>
   <div>
-    <h2 v-if="emotionStore.topCategories.length">
+    <div class="topEmotion" v-if="emotionStore.topCategories.length">
       이번달은 {{ emotionStore.emotionTitle }} 소비가 많아요 !
-    </h2>
-    <h2 v-else>이번달은 등록된 감정 소비가 없어요</h2>
-    <div class="chart-section">
-      <div class="chart-container">
-        <canvas ref="doughnut"></canvas>
+    </div>
+    <div class="topEmotion" v-else>이번달은 등록된 감정 소비가 없어요</div>
+
+    <!-- 가로 퍼센트 리스트 -->
+    <div class="emotion-list">
+      <div
+        class="emotion-item"
+        v-for="item in emotionStore.topCategories"
+        :key="item.emotion"
+      >
+        <img :src="getImageUrl(item.emotion)" alt="icon" class="icon" />
+        <span>{{ item.percent }}%</span>
       </div>
-      <br />
-      <ul>
-        <li v-for="item in emotionStore.topCategories" :key="item.emotion">
-          <div class="expense">
-            <img :src="getImageUrl(item.emotion)" alt="icon" class="icon" />
-            &nbsp;&nbsp;
-            <span style="float: right"> {{ item.percent }}% </span>
-          </div>
-        </li>
-      </ul>
+    </div>
+
+    <!-- 도넛 차트 -->
+    <div class="chart-container">
+      <canvas ref="doughnut"></canvas>
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useEmotionStore } from '@/stores/emotion'; // 경로는 프로젝트 구조에 맞게
@@ -117,24 +120,52 @@ h3 {
   padding: 2rem 1rem;
 }
 
-.chart-container {
-  width: 900px;
+/* .chart-container {
+  width: 100%;
   position: relative;
+} */
+
+.emotion-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.emotion-item {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
 }
 
 canvas {
-  width: 100% !important;
-  height: 100% !important;
+  width: 100%;
+  height: auto;
   display: block;
 }
 
 .chart-text {
-  max-width: 250px;
+  max-width: 100%;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 100%;
 }
 
-ul {
+/* ul {
   list-style: none;
   padding: 0;
   margin-top: 1rem;
@@ -143,22 +174,22 @@ ul {
 li {
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
-}
+} */
 
-h2 {
+.topEmotion {
   font-weight: bold;
-  margin: 1rem;
+  font-size: 1rem;
 }
 
 .expense {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   margin: 2rem;
 }
 
-.icon {
-  width: 3.5rem;
+/* .icon {
+  width: 2rem;
   margin-right: 0.5rem;
   vertical-align: middle;
-}
+} */
 </style>
