@@ -1,6 +1,6 @@
 <template>
   <div class="result">
-    <h2>이번달은 얼마 남았을까요</h2>
+    <!-- <h2>이번달은 얼마 남았을까요</h2> -->
     <br />
     <div class="between">
       <p>총 수입:</p>
@@ -39,15 +39,15 @@ const totalExpense = computed(() =>
 const netIncome = computed(() => netProfitStore.netIncome(props.selectedMonth));
 </script>
 <style scoped>
-h2 {
+/* h2 {
   font-weight: bold;
   margin: 1rem;
-}
+} */
 p {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   text-align: right;
   font-weight: bold;
-  margin: 1rem;
+  /* margin: 1rem; */
 }
 .between {
   display: flex;

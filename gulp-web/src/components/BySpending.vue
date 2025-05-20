@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>지출 상위 4개 항목</h2>
+    <!-- <h2>지출 상위 4개 항목</h2> -->
     <br />
     <canvas ref="barChart"></canvas>
   </div>
@@ -73,8 +73,8 @@ const renderChart = (labels, data) => {
             '#000000',
             '#706D54',
           ],
-          borderRadius: 18,
-          barThickness: 50,
+          borderRadius: 15,
+          barThickness: 24,
           barPercentage: 0.6,
           categoryPercentage: 0.8,
         },
@@ -119,15 +119,18 @@ onMounted(updateChart);
 watch(() => props.selectedMonth, updateChart);
 </script>
 <style scoped>
-h2 {
+/* h2 {
   font-weight: bold;
   margin: 1rem;
-}
+} */
 
 canvas {
-  max-width: 90%;
-  text-align: center;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
+
 ul {
   list-style: none;
   padding: 0;
@@ -139,14 +142,14 @@ li {
 }
 
 .expense {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  margin: 2rem;
+  margin: 1rem;
 }
 
 .icon {
-  width: 3.5rem;
-  margin-right: 0.5rem;
+  width: 2rem;
+  margin-right: 0.2rem;
   vertical-align: middle;
 }
 </style>
