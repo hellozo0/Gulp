@@ -58,7 +58,6 @@
     </button>
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
@@ -68,16 +67,13 @@ import NetProfit from '@/components/NetProfit.vue';
 import BySpending from '@/components/BySpending.vue';
 import QuickButton from '@/components/QuickButton.vue';
 import QuickCreate from '@/components/QuickCreate.vue';
-
 const showQuickCreate = ref(false); // 팝업 상태
 const toggleQuickCreate = () => {
   showQuickCreate.value = !showQuickCreate.value;
 };
-
 const budgetData = ref([]);
 const availableMonths = ref([]);
 const selectedMonth = ref('');
-
 // 월 목록 가져오기
 onMounted(async () => {
   const res = await axios.get('http://localhost:3000/budget');
@@ -88,7 +84,6 @@ onMounted(async () => {
   // selectedMonth : 가장 최신 월로 설정
   selectedMonth.value = availableMonths.value[0];
 });
-
 // 목차 스크롤
 function scrollToSectionHandler(event) {
   const id = event.target.value;
@@ -97,7 +92,6 @@ function scrollToSectionHandler(event) {
     if (el) {
       // 먼저 스크롤
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
       // 약간 delay 후 약간 위로 조정 (예: 80px 위로)
       setTimeout(() => {
         window.scrollBy({ top: -100, behavior: 'smooth' });
@@ -105,35 +99,27 @@ function scrollToSectionHandler(event) {
     }
   }
 }
-
 // 맨 위로 가기 버튼
-
 const showTopButton = ref(false);
-
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
-
 const handleScroll = () => {
   showTopButton.value = window.scrollY > 300; // 300px 이상 스크롤 시 표시
 };
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 });
-
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 </script>
-
 <!-- <script>
 import SortByLatest from '@/components/SortByLatest.vue';
 import ByEmotion from '@/components/ByEmotion.vue';
 import NetProfit from '@/components/NetProfit.vue';
 import BySpending from '@/components/BySpending.vue';
 import axios from 'axios';
-
 export default {
   name: 'Home',
   components: { SortByLatest, ByEmotion, NetProfit, BySpending },
@@ -153,26 +139,22 @@ export default {
   },
 };
 </script> -->
-
 <style scoped>
 /* index */
 /* .index_bySpending {
 font-weight: ;
 } */
-
 .section-selector {
   margin-bottom: 1rem;
-  font-size: 1.4rem;
+  font-size: 1rem;
 }
-
 h2 {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
-
 .month-selector {
   margin-bottom: 1rem;
-  font-size: 1.4rem;
+  font-size: 1rem;
 }
 select {
   padding: 0.5rem;
@@ -181,7 +163,7 @@ select {
   border: none;
   opacity: 90%;
   width: 7.7rem;
-  /* background-color: #fae55f; */
+  /* background-color: #FAE55F; */
 }
 select:hover {
   background-color: #fae55f;
@@ -190,17 +172,15 @@ select option {
   font-size: 0.8rem;
   padding: 2px 4px;
 }
-
 * {
   font-family: sans-serif;
 }
 .container-fluid {
   width: 95%;
-  max-width: none;
+  max-width: 390px;
   min-height: 100vh;
   margin: 0 auto;
 }
-
 .flexbox-container {
   display: flex;
   justify-content: space-between;
@@ -209,37 +189,33 @@ select option {
   align-items: stretch;
   flex-wrap: wrap;
 }
-
 /* 왼쪽 박스 */
 .bySpending {
   background-color: white;
   min-height: 100px;
   max-height: 100%;
-  max-width: 100%;
+  max-width: 390px;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   flex: 1;
   padding: 3rem;
   min-width: 200px;
 }
-
 /* 오른쪽 컬럼 */
 .right-column {
   display: flex;
   min-height: 100px;
   max-height: 100%;
-  max-width: 100%;
+  max-width: 390px;
   flex-direction: column;
   gap: 1.5rem;
   flex: 1;
 }
-
 .byEmotion {
   background-color: #fff;
   /* padding: 2rem; */
   width: 100%;
   height: 10rem;
-
   padding: 3rem;
   width: 100%;
   height: 200%;
@@ -252,19 +228,16 @@ select option {
   background-color: #fae55f;
   /* opacity: 60%; */
   padding: 3rem;
-
   /* padding: 12rem 8rem; */
   min-height: 200px;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
-
 /* 감정 영역 */
 /* .byEmotion {
   width: 100%;
   height: 200%;
 } */
-
 /* 퀵 생성 버튼 */
 .create-container {
   border-radius: 50%;
@@ -284,7 +257,6 @@ select option {
   right: 3%;
   z-index: 2000;
 }
-
 /* 맨 위로 가기 버튼 */
 .go-to-top-btn {
   border-radius: 50%;
@@ -304,11 +276,9 @@ select option {
   right: 3%;
   z-index: 2000;
 }
-
 .go-to-top-btn:hover {
   transform: scale(0.9); /* 클릭 시 크기 10% 줄어드는 효과 */
 }
-
 .go-to-top-btn:active {
   transform: scale(0.8); /* 클릭 시 좀 더 줄어들게 설정 */
 }
