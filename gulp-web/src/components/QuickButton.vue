@@ -1,7 +1,8 @@
 <template>
   <div class="quick-button" @click="handleClick">
-    <img src="@/assets/images/quick_icn.png" alt="QuickCreate" />
+    <!-- <img src="@/assets/images/quick_icn.png" alt="QuickCreate" /> -->
     <!-- 클릭 시 QuickCreate 팝업 보이도록 -->
+    <i class="fa-solid fa-plus"></i>
   </div>
 </template>
 
@@ -30,8 +31,8 @@ const handleClick = () => {
 }
 
 .quick-button img {
-  width: 100px;
-  height: 100px;
+  width: 3rem;
+  height: 3rem;
 }
 
 .quick-button:hover {

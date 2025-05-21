@@ -160,34 +160,6 @@ export default {
 font-weight: ;
 } */
 
-/* 맨 위로 가기 버튼 */
-.go-to-top-btn {
-  border-radius: 50%;
-  padding: 20px;
-  width: 5.5rem;
-  height: 5.5rem;
-  background-color: #f8dd26;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: fixed;
-  bottom: 200px;
-  right: 110px;
-  z-index: 2000;
-}
-
-.go-to-top-btn:hover {
-  transform: scale(0.9); /* 클릭 시 크기 10% 줄어드는 효과 */
-}
-
-.go-to-top-btn:active {
-  transform: scale(0.8); /* 클릭 시 좀 더 줄어들게 설정 */
-}
-
 .section-selector {
   margin-bottom: 1rem;
   font-size: 1.4rem;
@@ -218,9 +190,7 @@ select option {
   font-size: 0.8rem;
   padding: 2px 4px;
 }
-</style>
 
-<style scoped>
 * {
   font-family: sans-serif;
 }
@@ -271,8 +241,8 @@ select option {
   height: 10rem;
 
   padding: 3rem;
-
-  height: 300px;
+  width: 100%;
+  height: 200%;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
@@ -290,15 +260,56 @@ select option {
 }
 
 /* 감정 영역 */
-.byEmotion {
+/* .byEmotion {
   width: 100%;
   height: 200%;
+} */
+
+/* 퀵 생성 버튼 */
+.create-container {
+  border-radius: 50%;
+  padding: 20px;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: #f8dd26;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  bottom: 15%;
+  right: 3%;
+  z-index: 2000;
 }
 
-.create-container {
+/* 맨 위로 가기 버튼 */
+.go-to-top-btn {
+  border-radius: 50%;
+  padding: 20px;
+  width: 1.7rem;
+  height: 1.7rem;
+  background-color: #f8dd26;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: fixed;
-  bottom: 50px;
-  right: 100px;
-  z-index: 1000;
+  bottom: 22%;
+  right: 3%;
+  z-index: 2000;
+}
+
+.go-to-top-btn:hover {
+  transform: scale(0.9); /* 클릭 시 크기 10% 줄어드는 효과 */
+}
+
+.go-to-top-btn:active {
+  transform: scale(0.8); /* 클릭 시 좀 더 줄어들게 설정 */
 }
 </style>
