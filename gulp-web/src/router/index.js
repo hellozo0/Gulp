@@ -8,6 +8,9 @@ import MyPage from '../pages/MyPage.vue';
 import MyPageEdit from '@/pages/MyPageEdit.vue';
 import Landing from '@/pages/Landing.vue';
 import OnBoarding from '@/pages/OnBoarding.vue';
+import Ar from '@/pages/Ar.vue';
+import ArClass from '@/pages/ArClass.vue';
+import ArPhoto from '@/pages/ArPhoto.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +26,21 @@ const router = createRouter({
       path: '/history',
       name: 'history',
       component: History,
+    },
+    {
+      path: '/ar/classroom',
+      name: 'ar/classroom',
+      component: ArClass,
+    },
+    {
+      path: '/ar/photo',
+      name: 'ar/photo',
+      component: ArPhoto,
+    },
+    {
+      path: '/ar',
+      name: 'ar',
+      component: Ar,
     },
     {
       path: '/loan',
