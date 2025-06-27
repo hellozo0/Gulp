@@ -13,6 +13,7 @@
           >전체 내역</a
         >
         <a @click="handleNav('/loan')" :class="linkClass('/loan')">대출현황</a>
+        <a @click="handleNav('/ar')" :class="linkClass('/ar')">AR</a>
         <!-- <template v-if="isLoggedIn">
           <RouterLink to="/" :class="linkClass('/')">소비 통계</RouterLink>
           <RouterLink to="/history" :class="linkClass('/history')"
